@@ -1,3 +1,5 @@
+// Klang DSP sine wave example //
+
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
 #include "KlangNodes.hpp"
