@@ -1,3 +1,5 @@
+// Lo-Fi speech engine example //
+
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
 
