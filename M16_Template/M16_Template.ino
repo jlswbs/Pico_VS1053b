@@ -1,3 +1,5 @@
+// M16 DSP sine wave example //
+
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
 #include "M16.h" 
