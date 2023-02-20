@@ -6,3 +6,4 @@ Hardware:
 
 Software:
 - https://github.com/vult-dsp/vult
+- https://github.com/dennisppaul/klangstrom-arduino
