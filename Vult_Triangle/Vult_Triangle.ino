@@ -1,10 +1,10 @@
-// Vult DSP saw oscillator example //
+// Vult DSP triangle oscillator example //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
-#include "Saw.h"
+#include "Triangle.h"
 
-Saw_process_type saw;
+Triangle_process_type triangle;
 
 #define MP3_CLK   2
 #define MP3_MOSI  3
@@ -50,8 +50,8 @@ Saw_process_type saw;
 
 #define SAMPLE_RATE       22050
 
-uint16_t cv = 0;  // control voltage
-uint16_t rst = 0; // reset
+uint16_t cv = 0;    // control voltage
+uint16_t rst = 0;   // reset
 
 static inline void seed_random_from_rosc(){
   
@@ -279,7 +279,7 @@ void setup() {
   WriteReg16(SCI_AICTRL2, 50);          // set pcm volume
   WriteReg16(SCI_AIADDR, 0x0d00);       // start pcm mixer
 
-  Saw_process_init(saw);
+  Triangle_process_init(triangle);
 
 }
 
@@ -289,7 +289,7 @@ void loop() {
 
     for (int i = 0; i < 32; i++) {
 
-      int16_t sample = Saw_process(saw, cv, rst) >> 2;
+      int16_t sample = Triangle_process(triangle, cv, rst, 0) >> 2;
       WriteReg16(SCI_AICTRL1, sample);
     
     }

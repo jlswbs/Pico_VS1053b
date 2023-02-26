@@ -289,7 +289,7 @@ void loop() {
 
     for (int i = 0; i < 32; i++) {
 
-      int16_t sample = Sine_process(sine, cv, rst) / 2.1f;
+      int16_t sample = Sine_process(sine, cv, rst) >> 2;
       WriteReg16(SCI_AICTRL1, sample);
     
     }
