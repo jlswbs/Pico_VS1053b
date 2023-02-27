@@ -1,0 +1,85 @@
+external blep(ch:int,i:int) : real @[wave(channels=1,file="blep.wav")];
+
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+fun change(x:real):bool {
+    mem pre_x;
+    val v:bool = pre_x <> x;
+    pre_x = x;
+    return v;
+}
+
+fun pitchToRate_1024(pitch) @[table(size=32,min=0.0,max=127.0)] {
+   return 0.18984168003671556 * exp(0.057762265046662105 * pitch);
+}
+
+fun cvToPitch(cv) {
+   return cv * 120.0 + 24.0;
+}
+
+fun cvToRate_1024(cv) @[table(size=32,min=0.0,max=0.9)] {
+   return pitchToRate_1024(cvToPitch(cv));
+}
+
+fun phase(cv:real, reset:real) : real {
+   mem rate;
+   if(change(cv))
+   {
+      rate = cvToRate_1024(cv);
+   }
+   mem phase = if edge(reset > 0.5) then 0.0 else phase + rate;
+   phase = if phase > 1024.0 then phase - 1024.0 else phase;
+   return phase / 1024.0;
+}
+
+fun blep_play(trigger) {
+   mem playing;
+   mem index;
+   if(edge(trigger)) {
+      index = 0;
+      playing = true;
+   }
+   val out = 0.0;
+   if(playing) {
+      if(index >= blep_samples()) {
+         playing = false;
+         index = 0;
+      }
+      else
+         index = index + 16;
+      out = if playing then blep(0, index) else 0.0;
+   }
+   return out;
+}
+
+fun blep_step(cv:real, reset: bool) {
+   mem pre_phase;
+   mem active_blep;
+   val phase = phase(cv, 0.0);
+   val wrap = (pre_phase - phase) > 0.5;
+   pre_phase = phase;
+   if(wrap || edge(reset)) {
+      active_blep = (active_blep + 1) % 4;
+   }
+   val o0 = blep_play(active_blep == 0);
+   val o1 = blep_play(active_blep == 1);
+   val o2 = blep_play(active_blep == 2);
+   val o3 = blep_play(active_blep == 3);
+   val pulses = o0 - o1 + o2 - o3;
+   mem acc = acc * 0.996 + 20.0 * pulses;
+   return acc;
+}
+
+fun process(cv:real, reset: real){
+   val breset = reset > 0.5;
+   val out1 = o:blep_step(cv, breset);
+   val out2 = o:blep_step(cv, breset);
+   val out3 = o:blep_step(cv, breset);
+   val out4 = o:blep_step(cv, breset);
+   return (out1+out2+out3+out4)/4.0;
+}
