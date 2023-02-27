@@ -1,0 +1,149 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2017 Leonardo Laguna Ruiz
+-----
+Multioscillator using BLIT synthesis
+*/
+
+fun nsine(x) @[table(size=128,min=0.0,max=1.0)] {
+   return sin(6.283185307179586 * x);
+}
+
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+fun change(x:real):bool {
+    mem pre_x;
+    val v:bool = pre_x <> x;
+    pre_x = x;
+    return v;
+}
+
+fun dcblock(x0){
+  mem x1,y1;
+  val y0 = x0-x1+y1*0.995;
+  x1,y1 = x0,y0;
+  return y0;
+}
+
+fun pitchToRate_1024(pitch) @[table(size=32,min=0.0,max=127.0)] {
+   return 0.18984168003671556 * exp(0.057762265046662105 * pitch);
+}
+
+fun pitchToRate(pitch) @[table(size=32, min=0.0, max=127.0)] {
+   return 0.00018539226566085504 * exp(0.057762265046662105 * pitch);
+}
+
+fun cvToPitch(cv) {
+   return cv * 120.0 + 24.0;
+}
+
+fun cvToRate(cv) @[table(size=128, min=0.0, max=0.9)] {
+   return pitchToRate(cvToPitch(cv));
+}
+
+fun cvToRate_1024(cv) @[table(size=32,min=0.0,max=0.9)] {
+   return pitchToRate_1024(cvToPitch(cv));
+}
+
+fun cvToperiod(cv) @[table(size=32,min=0.0,max=1.0)] {
+   val pitch = cvToPitch(cv);
+   val f = 8.175798915643707 * exp(0.057762265046662105 * pitch); //440. 2^((pitch - 69)/12.)
+   return 22050.0 / f / 2.0;
+}
+
+fun phase(cv:real, reset:real) : real {
+   mem rate;
+   if(change(cv))
+   {
+      rate = cvToRate_1024(cv);
+   }
+   mem phase = if edge(reset > 0.5) then 0.0 else phase + rate;
+   phase = if phase > 1024.0 then phase - 1024.0 else phase;
+   return phase / 1024.0;
+}
+
+// Generates a BW-limited pulse train given the phase and the number of harmonics
+fun pulse_train(cv, phase){
+   mem m, scale;
+   if(change(cv)){
+      m = 2 * int(cvToperiod(cv)) + 1;
+      scale = 2.0 * cvToperiod(cv);
+   }
+   val pi_phase = phase / 2.0;
+   val denominator = nsine(pi_phase);
+   val out = 0.;
+   if(denominator <= eps()) {
+      out = 1.;
+   }
+   else {
+      val m_phase = (real(m) * pi_phase) % 1.0;
+      val numerator = nsine(m_phase);
+      out =  numerator / (scale * denominator);
+   }
+   return out;
+}
+and pulse_start() @[init] {
+   m = 2 * int(cvToperiod(0.0)) + 1;
+   scale = 2.0 * cvToperiod(0.0) + 1.0;
+}
+
+// Generates BW-limited waveforms using the blit algorithm.
+// It can generate PWM puses, saws and triangles.
+fun osc_blit(cv,pw,wave:real){
+  mem rate;
+  mem state_pulse;
+  mem state_saw;
+  mem output;
+
+  val fixed_cv = 0.;
+  if(wave < 1.) {
+    fixed_cv = cv;
+  }
+  else
+  {
+    fixed_cv = cv - 0.1;
+  }
+  // Updates the parameters if the cv changed
+  if(change(fixed_cv)) {
+    rate = cvToRate(fixed_cv);
+  }
+  val phase = phase(fixed_cv, 0.0);
+  // Generates a shifted version of the phase
+  val shift05 = 0.5 + pw * 0.49;
+  val shift = phase + shift05;
+  if(shift > 1.) {
+    shift = shift - 1.;
+  }
+  // Generates the first pulse train
+  val pulse1 = pulse_train(fixed_cv, phase);
+  // Generates the second pulse train
+  val pulse2 = pulse_train(fixed_cv, shift);
+
+  // Calculates the waveforms based on the pulse trains
+  state_pulse  = state_pulse  * 0.9995 + pulse1 - pulse2;
+  state_saw    = state_saw    * 0.9995 + (pulse1 + pulse2  - 2. * rate)/shift05/2.;
+
+  // Select the wave to output
+  if(wave < 1.) {
+    output = state_pulse;
+  }
+  else {
+    output = 2. * state_saw;
+  }
+
+  output = dcblock(output);
+  return output;
+}
+and init()@[init]{
+  rate = cvToRate(0.0);
+}
+
+fun process(cv, pw, wave) {
+   return osc_blit(cv, pw, wave);
+}
