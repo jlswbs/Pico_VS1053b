@@ -288,6 +288,7 @@ inline uint8_t oct_calc(uint8_t num)
 
 
 void updateNote() {
+  
   unsigned char cmd = songData1[songIndex];
   unsigned char opcode = cmd & 0xf0;
   unsigned char chan = cmd & 0x0f;
@@ -341,9 +342,8 @@ void updateNote() {
     timePlay = (unsigned int)( ((songData1[songIndex] << 8) | songData1[songIndex + 1]) * (1/speed) );
     songIndex += 2;
   }
+  
 };
-
-
 
 void setup(){
 
@@ -371,14 +371,13 @@ void setup(){
 
   opll = OPLL_new(MSX_CLK, SAMPLERATE);
 
-    OPLL_reset(opll);
+  OPLL_reset(opll);
 
-    // Set five channels with maximum volume and with instrument Guitar.
-    OPLL_writeReg(opll, 0x30, 0x20); 
-    OPLL_writeReg(opll, 0x31, 0x20); 
-    OPLL_writeReg(opll, 0x32, 0x20);
-    OPLL_writeReg(opll, 0x33, 0x20);
-    OPLL_writeReg(opll, 0x34, 0x20);  
+  OPLL_writeReg(opll, 0x30, 0x20); 
+  OPLL_writeReg(opll, 0x31, 0x20); 
+  OPLL_writeReg(opll, 0x32, 0x20);
+  OPLL_writeReg(opll, 0x33, 0x20);
+  OPLL_writeReg(opll, 0x34, 0x20);  
 
 }
 
@@ -399,7 +398,7 @@ void loop(){
 
 void loop1(){
 
-if (isPlaying){
+  if (isPlaying){
     if (timePlayCount > timePlay){
       timePlayCount = 0;
       updateNote();
