@@ -48,7 +48,7 @@ fix16_t Delay_soft(Delay__ctx_type_5 &_ctx, fix16_t x1);
 
 typedef struct Delay__ctx_type_6 {
    int write_pos;
-   fix16_t buffer[22050];
+   fix16_t buffer[32767];
 } Delay__ctx_type_6;
 
 typedef Delay__ctx_type_6 Delay_do_type;

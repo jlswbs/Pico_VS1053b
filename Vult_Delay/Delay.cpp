@@ -38,14 +38,14 @@ fix16_t Delay_do(Delay__ctx_type_6 &_ctx, fix16_t x, fix16_t time, fix16_t feedb
    time = fix_clip(time,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    feedback = fix_clip(feedback,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    fix16_t index_r;
-   index_r = fix_mul(0x56220000 /* 22050.000000 */,time);
+   index_r = fix_mul(0x7fff0000 /* 32767.000000 */,time);
    int index_i;
    index_i = fix_to_int(fix_floor(index_r));
    int delta;
    delta = (_ctx.write_pos + (- index_i));
    int read_pos;
    if(delta < 0){
-      read_pos = (22050 + delta);
+      read_pos = (32767 + delta);
    }
    else
    {
@@ -56,10 +56,10 @@ fix16_t Delay_do(Delay__ctx_type_6 &_ctx, fix16_t x, fix16_t time, fix16_t feedb
    fix16_t x1;
    x1 = fix_get(_ctx.buffer,read_pos);
    fix16_t x2;
-   x2 = fix_get(_ctx.buffer,((1 + read_pos) % 22050));
+   x2 = fix_get(_ctx.buffer,((1 + read_pos) % 32767));
    fix16_t ret;
    ret = (x1 + fix_mul(decimal,(x2 + (- x1))));
-   _ctx.write_pos = ((1 + _ctx.write_pos) % 22050);
+   _ctx.write_pos = ((1 + _ctx.write_pos) % 32767);
    fix_set(_ctx.buffer,_ctx.write_pos,Delay_saturate((x + fix_mul(feedback,ret))));
    return ret;
 }

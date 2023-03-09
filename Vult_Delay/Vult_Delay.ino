@@ -292,9 +292,9 @@ void loop() {
   if (ReadReg(SCI_AICTRL0) > 32){
 
     for (int i = 0; i < 32; i++) {
-
-      int16_t sample = Delay_process(del, Saw_process(saw, cv), dtime, feed) >> 2;     
-      WriteReg16(SCI_AICTRL1, sample);
+      int16_t sample = Saw_process(saw, cv) >> 2;      
+      int16_t sampledel = Delay_process(del, Saw_process(saw, cv), dtime, feed) >> 3;     
+      WriteReg16(SCI_AICTRL1, (sample+sampledel) >> 1);
     }
 
   } 

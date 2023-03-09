@@ -3,7 +3,7 @@ The MIT License (MIT)
 
 Copyright (c) 2017 Leonardo Laguna Ruiz
 -----
-Delay with 22050 samples
+Delay with 32768 samples
 */
 
 fun tanh_table(x:real) @[table(min = -24.0, max = 24.0, size = 241)]{
@@ -22,7 +22,7 @@ fun soft(x1) {
 }
 
 fun do(x:real, time:real, feedback:real) : real {
-   mem buffer : array(real,22050);
+   mem buffer : array(real,32767);
    mem write_pos;
    // Constraints the parameter values
    time     = clip(time,0.0,1.0);
