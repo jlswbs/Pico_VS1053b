@@ -1,0 +1,43 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2017 Leonardo Laguna Ruiz
+-----
+Saw oscillator using efficient polynomial transition regions (EPTR)
+*/
+// EPTR Efficient polynomial transition regions
+
+fun change(x:real):bool {
+    mem pre_x;
+    val v:bool = pre_x <> x;
+    pre_x = x;
+    return v;
+}
+
+fun pitchToRate(pitch) @[table(size=32, min=0.0, max=127.0)] {
+   return 0.00018539226566085504 * exp(0.057762265046662105 * pitch);
+}
+
+fun cvToPitch(cv) {
+   return cv * 120.0 + 24.0;
+}
+
+fun cvToRate(cv) @[table(size=128, min=0.0, max=0.9)] {
+   return pitchToRate(cvToPitch(cv));
+}
+
+fun process(cv) {
+   mem rate, phase;
+   val y = 0.0;
+   if(change(cv)) {
+      rate = cvToRate(cv);
+   }
+   phase = phase + rate * 2.0;
+   if(phase > 1.0 - rate) {
+      y = phase - (phase / rate) + (1.0 / rate) - 1.0;
+      phase = phase - 2.0;
+   }
+   else
+      y = phase;
+   return y;
+}
