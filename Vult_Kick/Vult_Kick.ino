@@ -302,13 +302,13 @@ void loop1() {
   gate = 65535;
   decay = 1024+rand()%8192;
   pitch = 8192+rand()%16384;
-  swept = rand();
+  swept = rand()%32768;
   noise = rand();
 
-  delay(120);
+  delay(1);
   
   gate = 0;
   
-  delay(120);
+  delay(239);
   
 }
