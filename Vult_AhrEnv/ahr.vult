@@ -1,0 +1,73 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2017 Leonardo Laguna Ruiz
+-----
+Attack Hold Release Envelope.
+
+To pass the parameters as direct values use the function 'do'.
+For parameters as controls use 'process'.
+*/
+
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+fun process(gate:real, a:real, h:real, r:real) {
+   mem state;
+   mem out;
+   mem rate;
+   mem target;
+   mem hold_phase;
+
+   val release = 0;
+   val attack  = 1;
+   val hold    = 2;
+   val reset   = 3;
+
+   val bgate = gate > 0.0;
+
+   if(edge(bgate)) {
+      state = reset;
+   }
+
+   // transitions
+
+   if(edge(out > 1024.0)) {
+      hold_phase = 0.0;
+      state = hold;
+   }
+   if(out < 10.0 && state == reset) {
+      state = attack;
+   }
+   if(hold_phase > 100.0 && state == hold) {
+      state = release;
+   }
+
+   // states
+
+   if(state == reset) {
+      rate = 1.0 / (100.0 * 0.01 + 0.01);
+      target = 0.0;
+   }
+   if(state == attack) {
+      rate = 1.0 / (100.0 * a + 0.01);
+      target = 1.2 * 1024.0;
+   }
+   if(state == hold) {
+      val hrate = 1.0 / (100.0 * h + 0.01);
+      hold_phase = hold_phase + hrate;
+   }
+   if(state == release) {
+      rate = 1.0 / (100.0 * r + 0.01);
+      target = 0.0;
+   }
+
+   out = out + (target - out) * rate * 0.005;
+
+
+   return clip(out/1024.0,0.0,1.0);
+}
