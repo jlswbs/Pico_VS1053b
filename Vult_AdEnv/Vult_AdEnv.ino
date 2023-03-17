@@ -57,6 +57,8 @@ Dline_process_type del;
 uint16_t gate = 0;
 uint16_t dtime = 0;
 uint16_t feed = 65535;
+uint16_t attack = 0;
+uint16_t decay = 24;
 
 static inline void seed_random_from_rosc(){
   
@@ -296,8 +298,8 @@ void loop() {
 
     for (int i = 0; i < 32; i++) {
 
-      int16_t sample = (Ad_process(env, gate, 0, 24) * Noise_process(noise, 65535)) >> 8;
-      sample = Dline_process(del, sample, dtime, feed);
+      int16_t sample = (Ad_process(env, gate, attack, decay) * Noise_process(noise, 65535)) >> 8;
+      sample = Dline_process(del, sample, dtime, feed) >> 1;
       WriteReg16(SCI_AICTRL1, sample);
      
     }
@@ -309,7 +311,8 @@ void loop() {
 void loop1() {
 
   gate = 65535;
-  dtime = 512+rand()%16384;
+  dtime = 1024+rand()%4096;
+  decay = 16+rand()%96;
   
   delay(1);
 
