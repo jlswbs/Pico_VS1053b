@@ -1,0 +1,50 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2017 Leonardo Laguna Ruiz
+-----
+Attack Decay envelope.
+
+To pass the parameters as direct values use the function 'do'.
+For parameters as controls use 'process'
+*/
+
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+fun process(gate, a, d) {
+   mem state;
+   mem out;
+   mem rate;
+   mem target;
+   mem scale;
+
+   val a_rate = 1.0 / (100.0 * a + 0.01);
+   val d_rate = 1.0 / (100.0 * d + 0.01);
+
+   val bgate = gate > 0.0;
+
+   out = out + (target - out) * rate * 0.004;
+
+   // idle // release
+   if(state == 0) {
+      if(edge(bgate)) {
+         state = 1; // goto attack
+         scale = gate / 5.0;
+      }
+      rate = d_rate;
+      target = 0.0;
+   }
+   // attack
+   if(state == 1) {
+      if(not(bgate) || out > 1024.0) state = 0; // goto release
+      rate = a_rate;
+      target = 1.2 * 1024.0;
+   }
+
+   return clip(out/1024.0,0.0,1.0) * scale;
+}
