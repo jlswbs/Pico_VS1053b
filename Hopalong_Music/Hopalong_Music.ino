@@ -1,19 +1,4 @@
-// VS1053 MIDI - Poly Logistic equation music //
-
-/*
-
-  Based to Logistic equation
-
-  Pot1 = chaos constant
-  Pot2 = instruments
-  Pot3 = tempo
-
-  Channel 1-6 notes 
-  Channel 10 drums
- 
-  Created by JLS 2023
-
-*/
+// VS1053 MIDI - Hopalong orbit fractal music //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
@@ -60,18 +45,15 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define MAXTEMPO  14    // 350 BPM 16th note
-#define MINTEMPO  111   // 45 BPM 16th note
-#define POLY      6     // note polyphony
-#define MAXADC    4095  // max ADC value
-#define MINADC    0     // min ADC value
+#define MAXTEMPO  14  // 350 BPM 16th note
+#define MINTEMPO  111 // 45 BPM 16th note
 
-  float x[POLY];
-  float nx[POLY];
-  uint8_t xout[POLY];
-  uint8_t notes;
-  uint8_t prog;
-  uint8_t vol;
+#define WIDTH     128
+#define HEIGHT    128
+
+  float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31);}
+  float a, b, c, x, y, t;
+  uint8_t xout, yout;
 
 static inline void seed_random_from_rosc(){
   
@@ -397,8 +379,7 @@ void load_code(void){
 void setup(){
 
   seed_random_from_rosc();
-  analogReadResolution(12);
-    
+  
   pinMode(MP3_DREQ, INPUT);
   pinMode(MP3_CS, OUTPUT);
   pinMode(MP3_XDCS, OUTPUT);
@@ -413,7 +394,7 @@ void setup(){
 
   load_code();
 
-  SetVolume(65, 65); // Set initial volume (20 = -10dB)
+  SetVolume(55, 55); // Set initial volume (20 = -10dB)
   WriteReg16(SCI_CLOCKF, 0x8BE8); // Set multiplier to 3.5x
 
   uint8_t room = 0;
@@ -432,54 +413,55 @@ void setup(){
   panning(4, 40);
   panning(5, 88);
 
-  for (int i = 0; i < POLY; i++) x[i] = 0.1f;
+  x = 0.0f;
+  y = 0.0f;
+  a = expf(randomf(0.0f, 1.0f) * logf(WIDTH));
+  b = expf(randomf(0.0f, 1.0f) * logf(WIDTH));
+  c = randomf(0.0f, 1.0f) * WIDTH;
 
 }
 
 void loop(){
 
-  float r = map(analogRead(A1), MINADC, MAXADC, 35000, 39900);
-  r /= 10000.0f;  
+  float nx = x;
+  float ny = y;
 
-  for (int i = 0; i < POLY; i++){
+  t = sqrtf(fabs(b * nx - c));
+  x = ny - ((nx<0) ? t : -t);
+  y = a - nx;
 
-    r += 0.01f;
-    nx[i] = x[i];
-    x[i] = r * nx[i] * (1.0f - nx[i]);
-    xout[i] = 127.0f * x[i];
-   
-  }
+  int ax = constrain((WIDTH/2) + x, 0, WIDTH);
+  int ay = constrain((HEIGHT/2) + y, 0, HEIGHT);
+            
+  if (ax>0 && ax<WIDTH && ay>0 && ay <HEIGHT) { xout = ax; yout = ay; }
 
-  char t = 0;
-
-  for (int i = 0; i < POLY; i++) t ^= (char)(xout[i]);
-
-  for (int i = 0; i < POLY; i++){  
+  uint8_t poly = xout%6;
+  uint8_t prog = yout;
   
-    vol = map(xout[i], 0, 127, 32, 96);
-    prog = map(analogRead(A2), 0, MAXADC, 0, xout[i]);
-    if (prog >= 18 && prog <= 23) prog = 0; // replace some instruments to grand piano
-    notes = map(xout[i], 0, 127, 12, 28 + (xout[i] / 2)); // quantise note
-    if(bitRead(t, i)) note_on(i, prog & 123, notes & 127, vol & 127);
+  if (prog == 19) prog = 0; // replace church organ to grand piano
+  if (prog == 78) prog = 77; // replace whistle to shakuhachi
 
-  }
- 
-  uint8_t drum = map(t & 127, 0, 127, 35, 66); // note 27-87 drum kit
-  uint8_t vold = map(t, 0, 127, 48, 88);
-  note_on(9, 0, drum & 127, vold & 127);
+  uint8_t vol = 32 + (yout/2);
+  uint8_t note = 24 + (xout/2);
 
-  uint8_t delay_ms = map(analogRead(A3), MINADC, MAXADC, MINTEMPO, MAXTEMPO);
-
-  delay(2 * delay_ms);
-
-  uint8_t rel_off = t % 6;
+  note_on(poly, prog & 123, note & 127, vol & 127);
   
-  if(rel_off == 0) all_sound_off(0);
-  if(rel_off == 1) all_sound_off(1);
-  if(rel_off == 2) all_sound_off(2);
-  if(rel_off == 3) all_sound_off(3);
-  if(rel_off == 4) all_sound_off(4);
-  if(rel_off == 5) all_sound_off(5);
+  uint8_t drum = map(yout, 0, 127, 27, 50); // note 27-87 drum kit
+
+  note_on(9, prog & 123, drum & 127, vol & 127);
+
+  uint8_t delay_ms = MINTEMPO;
+
+  delay (delay_ms);
+  
+  uint8_t rel_off = xout%8;
+  
+  if (rel_off == 0) all_sound_off(0);
+  if (rel_off == 1) all_sound_off(1);
+  if (rel_off == 2) all_sound_off(2);
+  if (rel_off == 3) all_sound_off(3);
+  if (rel_off == 4) all_sound_off(4);
+  if (rel_off == 5) all_sound_off(5);
 
   delay (delay_ms);
 
