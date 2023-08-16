@@ -8,3 +8,4 @@ Software:
 - https://github.com/vult-dsp/vult
 - https://github.com/dennisppaul/klangstrom-arduino
 - https://github.com/algomusic/M16
+- https://github.com/garygru/yummyDSP
