@@ -331,7 +331,7 @@ void loop1(){
   b = map(analogRead(A2), MINADC, MAXADC, 199, 9999);
   b /= 10000.0f;
 
-  for (int i = 0; i < SIZE; i++) delaymem[i] = randomf(-1.0, 1.0);
+  for (int i = 0; i < SIZE; i++) delaymem[i] = randomf(-1.0f, 1.0f);
   bound = map(SIZE * x, 0, SIZE, 16, SIZE);
 
   add = 1 + (32.0f * x);
@@ -354,7 +354,7 @@ void loop(){
   float sine = sinelut[loc];
   loc = loc + add;
   
-  int16_t sample = 15000 * (fold(sine, 0.5f) + out);
+  int16_t sample = 16384 * (fold(sine, 0.5f) + out);
   if (ReadReg(SCI_AICTRL0) > 32) WriteReg16(SCI_AICTRL1, sample);
 
 }
