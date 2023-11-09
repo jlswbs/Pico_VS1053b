@@ -1,4 +1,4 @@
-// M16 DSP phase modulation example //
+// M16 DSP phase modulation + reverb example //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
@@ -48,7 +48,8 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define SAMPLE_RATE       22050
+#define SAMPLE_RATE   22050
+#define BPM           120
 
 int16_t sineTable [TABLE_SIZE]; // empty wavetable
 
@@ -56,7 +57,7 @@ Osc aOsc1(sineTable);
 Osc aOsc2(sineTable);
 FX reverb;
 
-float modIndex = 0.2;
+float modIndex, ratio;
 
 static inline void seed_random_from_rosc(){
   
@@ -286,7 +287,9 @@ void setup() {
 
   Osc::sinGen(sineTable);
   reverb.setReverbSize(16);
-  reverb.setReverbLength(990); // 0-1024
+  reverb.setReverbLength(0.9f);
+
+  ratio = 0.5f;
 
 }
 
@@ -296,8 +299,8 @@ void loop() {
 
     for (int i = 0; i < 32; i++) {
 
-      int16_t sample = aOsc1.phMod(aOsc2.next(), modIndex);
-      WriteReg16(SCI_AICTRL1, reverb.reverb(sample>>2));
+      int16_t sample = reverb.reverb(aOsc1.phMod(aOsc2.next(), modIndex));
+      WriteReg16(SCI_AICTRL1, sample);
     
     }
 
@@ -307,12 +310,12 @@ void loop() {
 
 void loop1() {
   
-  int pitch = 36 + rand()%56;
-
+  float pitch = 24 + rand(48);
   aOsc1.setPitch(pitch);
-  aOsc2.setFreq(mtof(pitch) * 3.5f);
-  modIndex = 0.05f * (rand()%60);
+  aOsc2.setFreq(mtof(pitch) * ratio);
+  modIndex = 1.0f + chaosRand(24.0f);
 
-  delay(240);
+  int tempo = 60000 / BPM;
+  delay(tempo / 4);
 
 }

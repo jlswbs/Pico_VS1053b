@@ -36,7 +36,7 @@ public:
 	inline
 	int16_t next() {
     int32_t sampVal = readTable();
-    sampVal = ((int32_t)sampVal + (int32_t)prevSampVal)>>1; // smooth
+    sampVal = (sampVal + prevSampVal)>>1; // smooth
     incrementPhase();
     if (spread1 != 1) {
       sampVal = doSpread(sampVal);
@@ -47,7 +47,7 @@ public:
 
   /** Returns the sample at for the oscillator phase at specified time in milliseconds.
   * Used for LFOs. Assumes the Osc started at time = 0;
-	* @return outSamp The sample value at the calulated phase position.
+	* @return outSamp The sample value at the calculated phase position - range MIN_16 to MAX_16.
 	*/
 	inline
 	int16_t atTime(unsigned long ms) {
@@ -55,6 +55,16 @@ public:
     int index = indexAtTime % TABLE_SIZE;
     int16_t outSamp = readTableIndex(index);
     return outSamp;
+  }
+
+  /** Returns the normalised oscillator value at specified time in milliseconds.
+  * Used for LFOs. Assumes the Osc started at time = 0;
+	* @return outVal The osc value at the calculated phase position normalised between 0.0 and 1.0.
+	*/
+	inline
+	float atTimeNormal(unsigned long ms) {
+    int16_t outSamp = atTime(ms);
+    return max(0.0, outSamp * MAX_16_INV * 0.5 + 0.5);
   }
 
 	/** Change the sound table which will be played by the Oscil.
@@ -80,17 +90,16 @@ public:
 	}
 
   /** Set the spread value of the Oscil.
-  * @newVal A multiplyer of the base freq, from 0 to 1.0, values near zero are best
+  * @newVal A multiplyer of the base freq, from 0 to 1.0, values near zero are best for phasing effects
   */
 	inline
   void setSpread(float newVal) {
-		// spread = newVal;
     spread1 = 1.0f + newVal;
-    spread2 = 1.0f - newVal;
+    spread2 = 1.0f - newVal * 0.5;
     setFreq(getFreq());
 	}
 
-  /** Set the spread value of the Oscil. Ranges from 0 to 1.0 */
+  /** Set the spread value of the Oscil. Ranges > 0 */
 	inline
   void setSpread(int val1, int val2) {
 		spread1 = intervalRatios[val1 + 12]; //intervalFreq(frequency, val1);
@@ -104,11 +113,11 @@ public:
 	inline
   int16_t nextMorph(int16_t * secondWaveTable, float morphAmount) {
     int intMorphAmount = max(0, min (1024, (int)(1024 * morphAmount)));
-    int16_t sampVal = readTable();
-    int16_t sampVal2 = secondWaveTable[(int)phase_fractional];
-    if (morphAmount > 0) sampVal = (((int32_t)(sampVal2 * intMorphAmount) >> 10) +
-      ((int32_t)(sampVal * (1024 - intMorphAmount)) >> 10));
-    sampVal = ((int32_t)sampVal + (int32_t)prevSampVal)>>1; // smooth
+    int32_t sampVal = readTable();
+    int32_t sampVal2 = secondWaveTable[(int)phase_fractional];
+    if (morphAmount > 0) sampVal = (((sampVal2 * intMorphAmount) >> 10) +
+      ((sampVal * (1024 - intMorphAmount)) >> 10));
+    sampVal = (sampVal + prevSampVal)>>1; // smooth
     prevSampVal = sampVal;
     incrementPhase();
     if (spread1 != 1) {
@@ -132,7 +141,7 @@ public:
     int quarterTable = TABLE_SIZE * 0.25;
     int threeQuarterTable = quarterTable * 3;
     int portion14 = quarterTable * windowSize;
-    int16_t sampVal = 0;
+    int32_t sampVal = 0;
     if (duel) {
       if (phase_fractional < (quarterTable - portion14) || (phase_fractional > (quarterTable + portion14) &&
           phase_fractional < (threeQuarterTable - portion14)) || phase_fractional > (threeQuarterTable + portion14)) {
@@ -169,20 +178,18 @@ public:
         }
       }
     }
-    sampVal = ((int32_t)sampVal + (int32_t)prevSampVal)>>1; // smooth
+    sampVal = (sampVal + prevSampVal)>>1; // smooth
     prevSampVal = sampVal;
     incrementPhase();
-
-
     return sampVal;
   }
 
   /** Phase Modulation (FM)
-   *  Pass in a second oscillator and multiply its value to change mod depth
+   * Pass in a second oscillator and multiply its value to change mod depth
    * @param modulator - The next sample from the modulating waveform
-   * @param modIndex - The depth value to amplify the modulator by.
+   * @param modIndex - The depth value to amplify the modulator by, from 0.0 to 1.0
    * ModIndex values between 0.0 - 1.0 are normally enough, higher values are possible
-   * In Phase Mod, typically values 1/10th of FM ModIndex values provide equvalemnt change.
+   * In Phase Mod, typically values 1/10th of FM ModIndex values provide equvalent change.
    */
   inline
   int16_t phMod(int32_t modulator, float modIndex) {
@@ -197,7 +204,7 @@ public:
 
   /** Ring Modulation
   *  Pass in a second oscillator and multiply its value to change mod depth
-  *  Multiplying incomming oscillator Depth between 0.5 - 2.0 is best.
+  *  Multiplying incomming oscillator amplitude between 0.5 - 2.0 is best.
   */
   inline
   int16_t ringMod(int16_t audioIn) {
@@ -234,13 +241,6 @@ public:
   inline
   int16_t particle() {
     return particle(particleThreshold);
-    // int32_t noiseVal = readTable();
-  	// if (noiseVal > particleThreshold) {
-  	// 	particleEnv = noiseVal - (MAX_16 - noiseVal) - (MAX_16 - noiseVal);
-  	// } else particleEnv *= particleEnvReleaseRate;
-  	// incrementPhase();
-  	// noiseVal = (prevParticle + noiseVal + noiseVal)/3;
-    // return (noiseVal * particleEnv) >> 16;
   }
 
   /** Frequency Modulation Feedback
@@ -282,7 +282,9 @@ public:
     }
   }
 
-	/** Set the frequency of the oscillator in Hz. */
+	/** Set the frequency of the oscillator. 
+   * @freq The desired frequency in Hz
+  */
 	inline
 	void setFreq(float freq) {
 		if (freq > 0) {
@@ -310,16 +312,25 @@ public:
 	}
 
 	/** Set the frequency via a MIDI pitch
-  * @ midiPitch The pitch, value 0 - 127
+  * @midiPitch The pitch, value 0 - 127
   */
 	inline
 	void setPitch(float midi_pitch) {
-		setFreq(mtof(min(127.0f, max(0.0f, midi_pitch * (1 + (random(6)) * 0.00001f)))));
+    midiPitch = midi_pitch;
+		setFreq(mtof(min(127.0f, max(0.0f, midi_pitch * (1 + (rand(6) * 0.00001f))))));
     prevFrequency = frequency;
 	}
 
+  /** Return the pitch as a MIDI pitch 
+   * @midiPitch The pitch, value 0 - 127
+  */
+	inline
+	float getPitch(float midi_pitch) {
+    return midiPitch;
+  }
+
 	/** Set a specific phase increment.
-  * phaseinc_fractional, value between 0.0 to 1.0
+  * @phaseinc_fractional, value between 0.0 to 1.0
   */
 	inline
 	void setPhaseInc(float phaseinc_fractional) {
@@ -359,14 +370,26 @@ public:
 	void setPulseWidth(float width) {
     pulseWidthOn = true;
     pulseWidth = max(0.05f, min(0.95f, width));
+    float pwInv = 1.0f / pulseWidth;
+    float halfPhaseInc = phase_increment_fractional * 0.5f;
+    phase_increment_fractional_w1 = halfPhaseInc * pwInv;
+    phase_increment_fractional_w2 = halfPhaseInc / (1.0f - pulseWidth);
   }
 
- /** Below are helper methods for generating waveforms into existing arrays.
- * Call from class not instance. e.g. Osc::triGen(myWaveTableArray);
- * While it might be simpler to have each instance have its own wavetable,
- * it's more memory effcient for wavetables to be shared. So create them in the
- * main program file and reference them from instances of this class.
- */
+  /** Set using pulse width for the waveform
+  * @width The cycle amount for the first half of the wave - 0.0 to 1.0
+  */
+	inline
+	float getPulseWidth() {
+    return pulseWidth;
+  }
+
+  /** Below are helper methods for generating waveforms into existing arrays.
+   * Call from class not instance. e.g. Osc::triGen(myWaveTableArray);
+   * While it might be simpler to have each instance have its own wavetable,
+   * it's more memory effcient for wavetables to be shared. So create them in the
+   * main program file and reference them from instances of this class.
+   */
 
   /** Generate a cosine wave
   * @theTable The the wavetable to be filled
@@ -430,7 +453,7 @@ public:
   */
   static void noiseGen(int16_t * theTable) {
     for(int i=0; i<TABLE_SIZE; i++) {
-      theTable[i] = random(MAX_16 * 2) - MAX_16;
+      theTable[i] = rand(MAX_16 * 2) - MAX_16;
     }
   }
 
@@ -440,11 +463,11 @@ public:
   */
   static void noiseGen(int16_t * theTable, int grainSize) {
     int grainCnt = 0;
-    int randVal = random(MAX_16 * 2) - MAX_16;
+    int randVal = rand(MAX_16 * 2) - MAX_16;
     for(int i=0; i<TABLE_SIZE; i++) {
       theTable[i] = randVal;
       grainCnt++;
-      if (grainCnt % grainSize == 0) randVal = random(MAX_16 * 2) - MAX_16;
+      if (grainCnt % grainSize == 0) randVal = rand(MAX_16 * 2) - MAX_16;
     }
   }
 
@@ -452,9 +475,13 @@ public:
   * @theTable The the wavetable to be filled
   */
   static void crackleGen(int16_t * theTable) {
-    theTable[0] = MAX_16;
-    for(int i=1; i<TABLE_SIZE; i++) {
+    // theTable[0] = MAX_16;
+    for(int i=0; i<TABLE_SIZE; i++) {
       theTable[i] = 0;
+    }
+    for(int i=0; i<2; i++) {
+      theTable[(int)rand(TABLE_SIZE)] = MAX_16;
+      theTable[(int)rand(TABLE_SIZE)] = MIN_16;
     }
   }
 
@@ -480,7 +507,7 @@ public:
   static void pinkNoiseGen(int16_t * theTable) {
     float b0, b1, b2, b3, b4, b5, b6;
     for (int i=0; i<TABLE_SIZE; i++) {
-      float white = (random(20000) - 10000) * 0.001;
+      float white = (rand(5000) - 2500) * 0.001; // 20000, 10000
       b0 = 0.99886 * b0 + white * 0.0555179;
       b1 = 0.99332 * b1 + white * 0.0750759;
       b2 = 0.969 * b2 + white * 0.153852;
@@ -506,10 +533,10 @@ private:
   float phase_increment_fractional_w1 = phase_increment_fractional;
   float phase_increment_fractional_w2 = phase_increment_fractional;
 	const int16_t * table;
-  int16_t prevSampVal = 0;
+  int32_t prevSampVal = 0;
   bool isNoise = false;
   bool isCrackle = false;
-  int crackleAmnt = 0;
+  int crackleAmnt = MAX_16 * 0.5; //0; //MAX_16 * 0.5;
   float frequency = 440;
   float prevFrequency = 440;
   float pulseWidth = 0.5;
@@ -519,6 +546,7 @@ private:
   float feedback_phase_fractional = 0;
   float testVal = 1.3;
   float cycleLengthPerMS = frequency * 0.001f; // / 1000.0f;
+  float midiPitch = 69;
 
   /** Increments the phase of the oscillator without returning a sample.*/
 	inline
@@ -530,11 +558,11 @@ private:
     } else phase_fractional += phase_increment_fractional;
 		if (phase_fractional > TABLE_SIZE) {
 		  if (isNoise) {
-        phase_fractional = random(TABLE_SIZE);
+        phase_fractional = rand(TABLE_SIZE);
 		  } else if (isCrackle) {
-        if (rand(MAX_16) < crackleAmnt) {
-          phase_fractional = random(TABLE_SIZE);
-        } else phase_fractional = 1;
+        if (rand(MAX_16) > crackleAmnt) {
+          phase_fractional = 1; //rand(TABLE_SIZE);
+        } else phase_fractional = rand(TABLE_SIZE); //= 1;
       } else {
 		    phase_fractional -= TABLE_SIZE;
         // randomness destabilises pitch at the expense of some CPU load

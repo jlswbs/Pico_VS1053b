@@ -25,7 +25,7 @@ private:
   int16_t delayLevel = 1024; // 0 to 1024
   float maxDelayTime_ms = 0;
   unsigned int delayBufferSize_samples = 0;
-  bool delayFeedback = 0;
+  bool delayFeedback = false;
   int16_t prevOutValue = 0;
   byte filtered = 1;
 
@@ -36,6 +36,24 @@ public:
 	*/
 	Del() {};
 
+  /** Constructor.
+	* Create and setup delay.
+  * @param maxDelayTime The maximum delay time in milliseconds
+  * @param msDur The initial delay time in milliseconds, up to maxDelayTime
+  * @param level The delay feedback level, from 0.0 to 1.0 
+  * @param feedback Multitap delay feedback on or off, true or false
+	*/
+	Del(unsigned int maxDelayTime, int msDur, float level, bool feedback) {
+    setMaxDelayTime(maxDelayTime);
+    setTime(msDur);
+    setLevel(level);
+    setFeedback(feedback);
+  }
+
+  /** 
+   * Set the maximum delay time in milliseconds
+   * @param maxDelayTime The maximum delay time in milliseconds
+   */
   void setMaxDelayTime(unsigned int maxDelayTime) {
     delete[] delayBuffer; // remove any previous memory allocation
     maxDelayTime_ms = max((unsigned int)0, maxDelayTime);
@@ -59,11 +77,6 @@ public:
     return maxDelayTime_ms;
   }
 
-  /** Return the delay length in milliseconds */
-  float getTime() {
-    return delayTime_ms;
-  }
-
   /** Return the delay length in samples */
   unsigned int getDelayLength() {
     return delayTime_samples;
@@ -82,12 +95,23 @@ public:
     // Serial.print("delayTime_samples "); Serial.println(delayTime_samples);
   }
 
-  /** Specify the delay feedback level, from 0 to 1024 */
-  void setLevel(int level) {
-    delayLevel = min(1024, max(0, level));
+  /** Return the delay duration in milliseconds */
+  float getTime() {
+    return delayTime_ms;
   }
 
-  /** Specify the delay feedback level, from 0 to 1024 */
+  /** Specify the delay feedback level, from 0.0 to 1.0 */
+  void setLevel(float level) {
+    delayLevel = min(1024, max(0, (int)(level * 1024)));
+    // Serial.print("delayLevel "); Serial.println(delayLevel);
+  }
+
+  /** Return the delay feedback level, from 0.0 to 1.0 */
+  float getLevel() {
+    return delayLevel;
+  }
+
+  /** Turn delay feedback on or off */
   void setFeedback(bool state) {
     delayFeedback = state;
   }

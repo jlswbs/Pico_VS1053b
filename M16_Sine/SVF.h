@@ -22,27 +22,34 @@ class SVF {
   public:
     /** Constructor. */
     SVF() {
-      setResonance(0.2);
+      setRes(0.2);
     }
 
     /** Set how resonant the filter will be.
     * 0.01 > res < 1.0
     */
     inline
-    void setResonance(float resonance) {
-      q = (1.0 - max(0.1f, min(0.98f, resonance))) * 255;
+    void setRes(float resonance) {
+      resOffset = max(0.2f, min(0.98f, resonance));
+      q = (1.0 - resOffset) * 255;
       // q = sqrt(1.0 - atan(sqrt(resonance * 255)) * 2.0 / 3.1459); // alternative
-      scale = sqrt(max(0.1f, resonance)) * 255;
+      scale = sqrt(max(0.1f, resOffset)) * 255;
+      resOffset = 1.2 - resOffset * 1.6;
       // scale = sqrt(q) * 255; // alternative
     }
 
-    /** Set the centre or corner frequency of the filter.
-    * @param centre_freq_val  40 - 10k Hz (SAMPLE_RATE/4).
+    /** Set the cutoff or centre frequency of the filter.
+    * @param freq_val  40 - 10k Hz (SAMPLE_RATE/4).
     */
     inline
-    void setCentreFreq(int32_t centre_freq_val) {
-      int maxFreq = SAMPLE_RATE * 0.2222; ///4.5;
-      f = 2 * sin(3.1459 * max(0, min(maxFreq, centre_freq_val)) * SAMPLE_RATE_INV);
+    void setFreq(int32_t freq_val) {
+      f = 2 * sin(3.1459 * max(0, (int)min(maxFreq, freq_val)) * SAMPLE_RATE_INV);
+    }
+
+    /** Return the cutoff or centre frequency of the filter.*/
+    inline
+    int16_t getFreq() {
+      return f;
     }
 
     /** Set the cutoff or corner frequency of the filter.
@@ -61,32 +68,38 @@ class SVF {
 
     /** Calculate the next Lowpass filter sample, given an input signal.
      *  Input is an output from an oscillator or other audio element.
-     *  Needs to use int rather than uint16_t for some reason(?)
      */
     inline
     int16_t nextLPF(int32_t input) {
       calcFilter(input);
-      return max(-MAX_16, min(MAX_16, low)); // 65534, 32767
+      low = max((int32_t)-MAX_16, min((int32_t)MAX_16, low));
+      return low; 
+    }
+
+    /** Calculate the next Lowpass filter sample, given an input signal.
+     *  Input is an output from an oscillator or other audio element.
+     */
+    inline
+    int16_t next(int32_t input) {
+      return nextLPF(input);
     }
 
     /** Calculate the next Highpass filter sample, given an input signal.
      *  Input is an output from an oscillator or other audio element.
-     *  Needs to use int rather than uint16_t for some reason(?)
      */
     inline
     int16_t nextHPF(int32_t input) {
       calcFilter(input);
-      return max(-MAX_16, min(MAX_16, high));
+      return max(-MAX_16, (int)min((int32_t)MAX_16, high));
     }
 
     /** Calculate the next Bandpass filter sample, given an input signal.
      *  Input is an output from an oscillator or other audio element.
-     *  Needs to use int rather than uint16_t for some reason(?)
      */
     inline
     int16_t nextBPF(int32_t input) {
       calcFilter(input);
-      return max(-MAX_16, min(MAX_16, band));
+      return max(-MAX_16, (int)min((int32_t)MAX_16, band));
     }
 
     /** Calculate the next filter sample, given an input signal and a filter mix value.
@@ -100,7 +113,7 @@ class SVF {
       int lpfAmnt = 0;
       if (mix < 0.5) lpfAmnt = low * (1 - mix * 2);
       int bpfAmnt = 0;
-      if (mix != 0 || mix != 1) {
+      if (mix > 0.25 || mix < 0.75) {
         if (mix < 0.5) {
           lpfAmnt = band * mix * 2;
         } else lpfAmnt = band * (2 - mix * 2);
@@ -120,34 +133,44 @@ class SVF {
       int32_t output = input + allpassPrevIn - allpassPrevOut;
       allpassPrevIn = input;
       allpassPrevOut = output;
-      return max(-MAX_16, min(MAX_16, output));
+      return max(-MAX_16, (int)min((int32_t)MAX_16, output));
     }
 
     /** Calculate the next Notch filter sample, given an input signal.
      *  Input is an output from an oscillator or other audio element.
-     *  Needs to use int rather than uint16_t for some reason(?)
      */
     inline
     int16_t nextNotch(int32_t input) {
       calcFilter(input);
-      return max(-MAX_16, min(MAX_16, notch));
+      return max(-MAX_16, (int)min((int32_t)MAX_16, notch));
     }
 
-    private:
-      int32_t low, band, high, notch, allpassPrevIn, allpassPrevOut;
-//       float q = 1.0;
-      int32_t q = 255;
-//       float scale;
-      int32_t scale = sqrt(1) * 255;
-      volatile float f = SAMPLE_RATE * 0.25;
-      int32_t centFreq = 10000;
+    /** Calculate the next averaged filter sample, given an input signal.
+     *  Input is an output from an oscillator or other audio element.
+     *  Perhaps not technically a state variable filter, but useful for low power CPUs like ESP8266
+     */
+    inline
+    int16_t simpleLPF(int32_t input) {
+      simplePrev = (input + simplePrev) >> 1;
+      return simplePrev;
+    }
 
-      void calcFilter(int32_t input) {
-        low += f * band;
-        high = ((scale * input) >> 7) - low - ((q * band) >> 8);
-        band += f * high;
-        notch = high + low;
-      }
+  private:
+    int32_t low, band, high, notch, allpassPrevIn, allpassPrevOut, simplePrev;
+    int32_t q = 255;
+    int32_t scale = sqrt(1) * 255;
+    volatile float f = SAMPLE_RATE * 0.25;
+    int32_t centFreq = 10000;
+    float resOffset;
+    int32_t maxFreq = SAMPLE_RATE * 0.2222;
+
+    void calcFilter(int32_t input) {
+      input *= resOffset;
+      low += f * band;
+      high = ((scale * input) >> 7) - low - ((q * band) >> 8);
+      band += f * high;
+      notch = high + low;
+    }
 
 };
 

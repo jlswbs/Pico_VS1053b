@@ -30,7 +30,7 @@ class FX {
     * @param amount The degree of amplifcation with is then folded; 1.0 +
     */
     inline
-    int16_t waveFold(int sample_in, float amount) {
+    int16_t waveFold(int32_t sample_in, float amount) {
       if (amount > 1.0) {
         sample_in *= amount;
         while(abs(sample_in) > MAX_16) {
@@ -38,7 +38,7 @@ class FX {
           if (sample_in < 0) sample_in = -MAX_16 - (sample_in + MAX_16);
         }
       }
-      return sample_in;
+      return clip(sample_in);
     }
 
     /** Clipping
@@ -70,7 +70,7 @@ class FX {
       int16_t samp = 20831 * atan(amount * (sample_in * (float)MAX_16_INV)); // 20831
       // int16_t samp = (sample_in / (float)MAX_16) * MAX_16;
       // if (samp > MAX_16 || samp < MIN_16) Serial.println(samp);
-      return samp;
+      return clip(samp);
     }
 
     /** Soft Saturation
@@ -83,8 +83,32 @@ class FX {
       int16_t thresh = 26033;
       if (sample_in > thresh) sample_in *= ((float)MAX_16 / ((thresh + MAX_16) * 0.5f));
       if (sample_in < -26033) sample_in = (sample_in * -1 * ((float)MAX_16 / ((thresh + MAX_16) * 0.5f))) * -1;
-      return sample_in;
+      return clip(sample_in);
     }
+
+    /** Compressor with gain compensation
+    *  @param sample is the input sample value
+    *  @param threshold is the threshold value between 0.0 and 1.0
+    *  @param ratio is the ratio value, > 1.0, typically 2 to 4
+    */
+    inline
+    int16_t compression(int16_t sample, float threshold, float ratio) {
+      int16_t thresh = threshold * MAX_16;
+      float invRatio = 1.0f / ratio;
+      float gainCompensationRatio = 1.0f + (1.0f - threshold * (1.0f + 1.0f * invRatio));
+      if (sample >= thresh || sample <= -thresh) {
+          int32_t compressed_sample;
+          if (sample > 0) {
+              compressed_sample = (int32_t)((sample - thresh) * invRatio + thresh);
+              if (compressed_sample > MAX_16) compressed_sample = MAX_16;
+          } else {
+              compressed_sample = (int32_t)((sample + thresh) * invRatio - thresh);
+              if (compressed_sample < MIN_16) compressed_sample = MIN_16;
+          }
+          return compressed_sample * gainCompensationRatio;
+      }
+      return sample * gainCompensationRatio;
+    }    
 
     /** Update the wave shaping table
   	* @param TABLE_NAME is the name of the array. Filled with 16bit values.
@@ -101,14 +125,18 @@ class FX {
     }
 
     /** Wave Shaper
-    *  Distorts wave input by wave shaping function
-    *  Shaping wave is, like osc wavetables, WAVE_TABLE wide from MIN_16 to MAX_16 values
+    * Distorts wave input by wave shaping function
+    * Shaping wave is, like osc wavetables, WAVE_TABLE wide from MIN_16 to MAX_16 values
+    * @sample_in is the input sample value from the carrier wave
+    * @amount is the degree of distortion, from 0.0 to 1.0
     */
     inline
-    int16_t waveShaper(int32_t sample_in) {
+    int16_t waveShaper(int16_t sample_in, float amount) {
       int index = sample_in;
       if (shapeTableSize > 0) index = (sample_in + MAX_16) / waveShaperStepInc;
-      return shapeTable[index];
+      int16_t sampVal = shapeTable[index];
+      if (amount >= 0 && amount < 1.0) sampVal = (sampVal * amount) + (sample_in * (1.0 - amount));
+      return sampVal;
     }
 
     /** Create a dedicated soft clip wave shaper
@@ -176,7 +204,7 @@ class FX {
     int16_t pluck(int16_t audioIn, float pluckFreq, float depth) {
       if (!pluckBufferEstablished) initPluckBuffer();
       // read
-//      float read_index_fractional = SAMPLE_RATE / pluckFreq;
+      //float read_index_fractional = SAMPLE_RATE / pluckFreq;
       int pluck_buffer_read_index = pluck_buffer_write_index - SAMPLE_RATE / pluckFreq + 1;
       if (pluck_buffer_read_index < 0) pluck_buffer_read_index += PLUCK_BUFFER_SIZE;
       int bufferRead = pluckBuffer[pluck_buffer_read_index] * depth;
@@ -198,13 +226,13 @@ class FX {
     * Inspired by reverb example G08 in Pure Data.
     */
     inline
-    int16_t reverb(int16_t audioIn) {
+    int16_t reverb(int32_t audioIn) {
       // set up first time called
       if (!reverbInitiated) {
         initReverb(reverbSize);
       }
       processReverb(audioIn, audioIn);
-      return ((audioIn * (1024 - reverbMix))>>10) + ((revP1 * reverbMix)>>11) + ((revP2 * reverbMix)>>11);
+      return clip(((audioIn * (1024 - reverbMix))>>10) + ((revP1 * reverbMix)>>13) + ((revP2 * reverbMix)>>13));
     }
 
     /** A simple reverb using recursive delay lines.
@@ -216,30 +244,32 @@ class FX {
     * Inspired by reverb example G08 in Pure Data.
     */
     inline
-    void reverbStereo(int16_t audioInLeft, int16_t audioInRight, int16_t &audioOutLeft, int16_t &audioOutRight) {
+    void reverbStereo(int32_t audioInLeft, int32_t audioInRight, int16_t &audioOutLeft, int16_t &audioOutRight) {
       // set up first time called
       if (!reverbInitiated) {
         initReverb(reverbSize);
       }
       processReverb(audioInLeft, audioInRight);
-      audioOutLeft = ((audioInLeft * (1024 - reverbMix))>>10) + ((revP1 * reverbMix)>>10);
-      audioOutRight = ((audioInRight * (1024 - reverbMix))>>10) + ((revP2 * reverbMix)>>10);
+      audioOutLeft = clip(((audioInLeft * (1024 - reverbMix))>>10) + ((revP1 * reverbMix)>>12));
+      audioOutRight = clip(((audioInRight * (1024 - reverbMix))>>10) + ((revP2 * reverbMix)>>12));
     }
 
     /** Set the reverb length
-    * @rLen The amount of feedback that effects reverb decay time. Values from 0 to 1024.
+    * @rLen The amount of feedback that effects reverb decay time. Values from 0.0 to 1.0.
     */
     inline
-    void setReverbLength(int rLen) {
-      reverbLength = max(0, min(1024, rLen));
+    void setReverbLength(float rLen) {
+      reverbFeedbackLevel = max(0.0f, min(1.0f, rLen));
+      initReverb();
     }
 
     /** Set the reverb amount
-    * @rMix The balance between dry and wet signal. Amount of wet signal, from 0 to 1024.
+    * @rMix The balance between dry and wet signal, as the amount of wet signal, from 0.0 to 1.0.
     */
     inline
-    void setReverbMix(int rMix) {
-      reverbMix = max(0, min(1024, rMix));
+    void setReverbMix(float rMix) {
+      reverbMix = max(0, min(1024, (int)(rMix * 1204.0f)));
+      // Serial.print("reverbMix ");Serial.println(reverbMix);
     }
 
     /** Set the reverb memory size
@@ -259,9 +289,10 @@ class FX {
     int prevPluckOutput = 0;
     bool pluckBufferEstablished = false;
     bool reverbInitiated = false;
-    int reverbLength = 980; // 0 to 1024
+    float reverbFeedbackLevel = 0.980; // 0.0 to 1.0
     int reverbMix = 270; // 0 to 1024
-    float reverbSize = 1.0; // 0 to 1, memory allocated to delay lengths
+    float reverbSize = 1.0; // >= 1, memory allocated to delay lengths
+    // float reverbTime = 0.49999; // 0 to 0.5
     Del delay1, delay2, delay3, delay4;
     int32_t revD1, revD2, revD3, revD4, revP1, revP2, revP3, revP4, revP5, revP6, revM3, revM4, revM5, revM6;
     int16_t * shapeTable;
@@ -288,10 +319,10 @@ class FX {
     void initReverb(float size) { // 1/8 of Pd values
       delay1.setMaxDelayTime(8 * size); delay2.setMaxDelayTime(9 * size);
       delay3.setMaxDelayTime(11 * size); delay4.setMaxDelayTime(13 * size);
-      delay1.setTime(7.5 * size); delay1.setLevel(reverbLength); delay1.setFeedback(true);
-      delay2.setTime(8.993 * size); delay2.setLevel(reverbLength); delay2.setFeedback(true);
-      delay3.setTime(10.844 * size); delay3.setLevel(reverbLength); delay3.setFeedback(true);
-      delay4.setTime(12.118 * size); delay4.setLevel(reverbLength); delay4.setFeedback(true);
+      delay1.setTime(7.5 * size); delay1.setLevel(reverbFeedbackLevel); delay1.setFeedback(true);
+      delay2.setTime(8.993 * size); delay2.setLevel(reverbFeedbackLevel); delay2.setFeedback(true);
+      delay3.setTime(10.844 * size); delay3.setLevel(reverbFeedbackLevel); delay3.setFeedback(true);
+      delay4.setTime(12.118 * size); delay4.setLevel(reverbFeedbackLevel); delay4.setFeedback(true);
       reverbInitiated = true;
     }
 
@@ -301,7 +332,9 @@ class FX {
       revP1 = audioInLeft + revD1; revP2 = audioInRight + revD2;
       revP3 = (revP1 + revP2); revM3 = (revP1 - revP2); revP4 = (revD3 + revD4); revM4 = (revD3 - revD4);
       revP5 = (revP3 + revP4)>>1; revP6 = (revM3 + revM4)>>1; revM5 = (revP3 - revP4)>>1; revM6 = (revM3 - revM4)>>1;
+      // revP5 = (revP3 + revP4); revP6 = (revM3 + revM4); revM5 = (revP3 - revP4); revM6 = (revM3 - revM4);
       delay1.write(revP5); delay2.write(revP6); delay3.write(revM5); delay4.write(revM6);
+      // delay1.write(revP5 * reverbTime); delay2.write(revP6 * reverbTime); delay3.write(revM5 * reverbTime); delay4.write(revM6 * reverbTime);
     }
 };
 

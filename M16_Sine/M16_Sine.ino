@@ -1,9 +1,10 @@
-// M16 DSP sine wave example //
+// M16 DSP sine wave + reverb example //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
 #include "M16.h" 
 #include "Osc.h"
+#include "FX.h"
 
 #define MP3_CLK   2
 #define MP3_MOSI  3
@@ -47,11 +48,13 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define SAMPLE_RATE       22050
+#define SAMPLE_RATE   22050
+#define BPM           120
 
 int16_t sineTable [TABLE_SIZE]; // empty wavetable
 
 Osc aOsc(sineTable);
+FX reverb;
 
 static inline void seed_random_from_rosc(){
   
@@ -280,6 +283,8 @@ void setup() {
   WriteReg16(SCI_AIADDR, 0x0d00);       // start pcm mixer  
 
   Osc::sinGen(sineTable);
+  reverb.setReverbSize(16);
+  reverb.setReverbLength(0.9f);
 
 }
 
@@ -289,7 +294,7 @@ void loop() {
 
     for (int i = 0; i < 32; i++) {
 
-      int16_t sample = aOsc.next();
+      int16_t sample = reverb.reverb(aOsc.next());
       WriteReg16(SCI_AICTRL1, sample);
     
     }
@@ -300,9 +305,10 @@ void loop() {
 
 void loop1() {
   
-  int pitch = 36 + rand()%64;
+  float pitch = 36 + rand()%64;
   aOsc.setPitch(pitch);
 
-  delay(240);
+  int tempo = 60000 / BPM;
+  delay(tempo / 4);
 
 }
