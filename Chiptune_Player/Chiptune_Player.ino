@@ -51,9 +51,6 @@
 #define FREQ        50
 #define TRACKLEN    32
 
-volatile uint8_t callbackwait;
-volatile uint8_t lastsample;
-
 uint8_t trackwait;
 uint8_t trackpos;
 uint8_t playsong;
@@ -424,28 +421,16 @@ void initresources()
 
 int16_t chiptune_callback()        // called at 8 KHz
 {
-    uint8_t i;
-    int16_t acc;
-    uint8_t newbit;
 
-    newbit = 0;
+    uint8_t newbit = 0;
     if(noiseseed & 0x80000000L) newbit ^= 1;
     if(noiseseed & 0x01000000L) newbit ^= 1;
     if(noiseseed & 0x00000040L) newbit ^= 1;
     if(noiseseed & 0x00000200L) newbit ^= 1;
     noiseseed = (noiseseed << 1) | newbit;
 
-    if(callbackwait)
-    {
-        callbackwait--;
-    }
-    else
-    {
-        callbackwait = 90 - 1;
-    }
-
-    acc = 0;
-    for(i = 0; i < 4; i++)
+    int16_t acc = 0;
+    for(int i = 0; i < 4; i++)
     {
         int8_t value; // [-32,31]
 
@@ -726,7 +711,7 @@ void setup(){
 }
 
 void loop(){
-  
+
   int16_t sample = chiptune_callback();
   if (ReadReg(SCI_AICTRL0) > 32) WriteReg16(SCI_AICTRL1, sample);
 
