@@ -1,8 +1,8 @@
-// VLSI 1053 codec PCM mixer - Triangle wave FM + echoverb //
+// VLSI 1053 codec PCM mixer - Fold sine wave + echoverb //
 
 /*
 
-  Pot1 = FM osc frequency
+  Pot1 = fold wave
   Pot2 = echo mix volume
   Pot3 = tempo
  
@@ -12,7 +12,6 @@
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
-#include "wavetable.h"
 
 #define MP3_CLK   2
 #define MP3_MOSI  3
@@ -61,24 +60,25 @@
 #define MINBPM      60
 #define MAXADC      4095
 #define MINADC      0
-#define WTB_LEN     1024
+#define WTB_LEN     4096
 #define BUFF_SIZE   4096
 
 float randomf(float minf, float maxf) { return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31); }
 
+float table[WTB_LEN];
 unsigned int buff_pos = 0;
 float buff[BUFF_SIZE];
-float mix;
+float mix, lim;
 
 class Synth {
-  public:
-  float pointer = 0.0f;
-  float pitch = 0.0f;
+public:
+	float pointer = 0.0f;
+	float pitch = 0.0f;
   bool gate = 0;
   float decay = 0.0f;
   float d = 0.0f;
 
-  float calculate();
+	float calculate();
 };
 
 float Synth::calculate() {
@@ -103,13 +103,29 @@ float Synth::calculate() {
   d = d - decay;
   if (d <= 0.0f) d = 0.0f;
 
-	float osc = db * triangle[a] + da * triangle[b];
+
+	float osc = db * (table[a]) + da * (table[b]);
 
 	return d * osc;
 
 }
 
-Synth osc1, osc2;
+Synth osc1;
+
+float fold(float x, float lim) {
+  
+  float out = x;
+  
+  while (out > lim || out < -lim){
+    
+    if (out > lim) out = lim - (out - lim);
+    else if (out < -lim) out = -lim + (-out-lim);
+    
+  }
+    
+  return out;
+
+}
 
 float echo_verb(float sample, float decay) {
 
@@ -348,8 +364,7 @@ void setup(){
   WriteReg16(SCI_AICTRL2, 50);      // set pcm volume
   WriteReg16(SCI_AIADDR, 0x0d00);   // start pcm mixer
 
-  osc1.decay = 0.001f;
-  osc2.decay = 0.001f;
+  for (int i = 0; i < WTB_LEN; i++) table[i] = sinf(TWO_PI * (i / (float) WTB_LEN));
 
 }
 
@@ -363,7 +378,7 @@ void loop(){
     
     for (int i = 0; i < 32; i++) { 
       
-      int16_t sample = 32767.0f * echo_verb(osc1.calculate() * osc2.calculate(), mix);
+      int16_t sample = 32767.0f * echo_verb(fold(osc1.calculate(), lim), mix);
       WriteReg16(SCI_AICTRL1, sample);
     
     }
@@ -374,19 +389,19 @@ void loop(){
 
 void loop1(){
 
+  lim = map(analogRead(A1), MINADC, MAXADC, 9999, 499);
+  lim /= 10000.0f;
+
   mix = map(analogRead(A2), MINADC, MAXADC, 499, 9999);
   mix /= 10000.0f;
-
+  
   osc1.gate = 1;
-  osc2.gate = 1;
-
-  osc1.pitch = randomf(110, 1760);
-  osc2.pitch = map(analogRead(A1), MINADC, MAXADC, 1, 440);
+  osc1.decay = randomf(0.1f, 0.9f) / SAMPLE_RATE * 10;
+  osc1.pitch = randomf(50, 880);
 
   delay(1);
 
   osc1.gate = 0;
-  osc2.gate = 0;
 
   uint16_t del = map(analogRead(A3), MINADC, MAXADC, MINBPM, MAXBPM);
   int tempo = 60000 / del;
