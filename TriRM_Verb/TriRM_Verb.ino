@@ -1,10 +1,10 @@
-// VLSI 1053 codec PCM mixer - Two karplus strong with diode clipper + echoverb //
+// VLSI 1053 codec PCM mixer - Triangle wave ringmodulator + echoverb //
 
 /*
 
-  Pot1 =
-  Pot2 =
-  Pot3 =
+  Pot1 = RM osc frequency
+  Pot2 = echo mix volume
+  Pot3 = tempo
  
   Created by JLS 2024
 
@@ -12,6 +12,7 @@
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
+#include "wavetable.h"
 
 #define MP3_CLK   2
 #define MP3_MOSI  3
@@ -60,67 +61,56 @@
 #define MINBPM      60
 #define MAXADC      4095
 #define MINADC      0
-#define SIZE        256
-#define BUFF_SIZE   8192
+#define WTB_LEN     1024
+#define BUFF_SIZE   4096
 
 float randomf(float minf, float maxf) { return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31); }
 
 unsigned int buff_pos = 0;
 float buff[BUFF_SIZE];
+float mix;
 
 class Synth {
-public:
-	float out = 0.0f;
+  public:
+  float pointer = 0.0f;
   float vol = 0.0f;
-  float last = 0.0f;
-  float curr = 0.0f;
-  float delaymem[SIZE];
-  uint16_t locat = 0;
-  uint16_t bound = SIZE;
-  float accum = 0.0f;
-  float lowpass = 0.0f;
+  float pitch = 0.0f;
+  bool gate = 0;
+  float decay = 0.0f;
+  float d = 0.0f;
 
-  void trigger(float val);
-	float calculate();
+  float calculate();
 };
-
-void Synth::trigger(float val) {
-
-  uint16_t lenght = val * SIZE;
-
-  for (int i = 0; i < SIZE; i++) delaymem[i] = 0;
-	for (int i = 0; i < lenght; i++) delaymem[i] = randomf(-1.0f, 1.0f);
-
-}
 
 float Synth::calculate() {
 
-	delaymem[locat++] = out;
-  if (locat >= bound) locat = 0;
-  curr = delaymem[locat];
-  out = 0.5f * accum;
-  accum = accum - (lowpass * (accum - (last + curr))); 
-  last = curr;
+	int a, b;
+	float da, db;
 
-	return vol * out;
+	float wtb_incr = WTB_LEN * (pitch) / SAMPLE_RATE;
+	pointer = pointer + wtb_incr;
+
+	if (pointer > WTB_LEN) pointer = pointer - WTB_LEN;
+
+	a = pointer;
+	da = pointer - a;
+	b = a + 1;
+	db = b - pointer;
+
+	if (b >= WTB_LEN) b = 0;
+  if (gate == 1) d = 1.0f;
+  else d = d;
+
+  d = d - decay;
+  if (d <= 0.0f) d = 0.0f;
+
+	float osc = db * triangle[a] + da * triangle[b];
+
+	return vol * (d * osc);
 
 }
 
 Synth osc1, osc2;
-
-float diode_clip (float input, float thres) {
-  
-  float in, out;
-  float buf = input;
-  in = fabs(input) / thres;
-  if (in <= (1.0f / 3.0f)) out = 2.0f * in;
-  else if (in <= (2.0f / 3.0f)) out = (-3.0f * (in*in)) + (4.0f * in) - (1.0f / 3.0f);
-  else out = 1.0f;
-  out = out * thres;
-  if (buf <= 0.0f) out = -1.0f * out;
-  return out;
-
-}
 
 float echo_verb(float sample, float decay) {
 
@@ -359,6 +349,9 @@ void setup(){
   WriteReg16(SCI_AICTRL2, 50);      // set pcm volume
   WriteReg16(SCI_AIADDR, 0x0d00);   // start pcm mixer
 
+  osc1.decay = 0.001f;
+  osc2.decay = 0.001f;
+
 }
 
 void setup1(){
@@ -371,7 +364,7 @@ void loop(){
     
     for (int i = 0; i < 32; i++) { 
       
-      int16_t sample = 32767.0f * echo_verb(diode_clip(osc1.calculate()+osc2.calculate(), 0.2f), 0.3f);
+      int16_t sample = 32767.0f * echo_verb(osc1.calculate() * osc2.calculate(), mix);
       WriteReg16(SCI_AICTRL1, sample);
     
     }
@@ -382,20 +375,24 @@ void loop(){
 
 void loop1(){
 
-  osc1.trigger(randomf(0.001f, 0.5f));
-  osc1.vol = randomf(0.2f, 1.0f);
-  osc1.lowpass = randomf(0.01f, 0.5f);
-  osc1.bound = random(16, SIZE);
+  mix = map(analogRead(A2), MINADC, MAXADC, 499, 9999);
+  mix /= 10000.0f;
 
-  uint16_t del = MINBPM;
+  osc1.gate = 1;
+  osc2.gate = 1;
+
+  osc1.vol = randomf(0.5f, 1.5f);
+  osc1.pitch = randomf(110, 1760);
+  osc2.vol = randomf(0.3f, 1.0f);
+  osc2.pitch = map(analogRead(A1), MINADC, MAXADC, 1, 440);
+
+  delay(1);
+
+  osc1.gate = 0;
+  osc2.gate = 0;
+
+  uint16_t del = map(analogRead(A3), MINADC, MAXADC, MINBPM, MAXBPM);
   int tempo = 60000 / del;
-  delay(tempo / 8);
-
-  osc2.trigger(randomf(0.001f, 0.1f));
-  osc2.vol = randomf(0.2f, 1.0f);
-  osc2.lowpass = randomf(0.01f, 0.7f);
-  osc2.bound = random(16, SIZE);
-
-  delay(tempo / 8);
+  delay((tempo / 4) - 1);
 
 }

@@ -1,11 +1,7 @@
-// VLSI 1053 codec PCM mixer - Two karplus strong with diode clipper + echoverb //
+// VLSI 1053 codec PCM mixer - random Marimba + echoverb //
 
 /*
 
-  Pot1 =
-  Pot2 =
-  Pot3 =
- 
   Created by JLS 2024
 
 */
@@ -60,23 +56,26 @@
 #define MINBPM      60
 #define MAXADC      4095
 #define MINADC      0
-#define SIZE        256
+#define SIZE        1024
 #define BUFF_SIZE   8192
 
 float randomf(float minf, float maxf) { return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31); }
+float clipminmaxf(const float min, const float x, const float max){ return (((x)>=max)?max:((x)<=min)?min:(x)); }
+float hard_clip(float x, float lim) { return clipminmaxf(-lim, x, lim); }
 
 unsigned int buff_pos = 0;
 float buff[BUFF_SIZE];
+float lim = 0.0f;
 
 class Synth {
 public:
 	float out = 0.0f;
   float vol = 0.0f;
+  float pitch = 0.0f;
   float last = 0.0f;
   float curr = 0.0f;
   float delaymem[SIZE];
   uint16_t locat = 0;
-  uint16_t bound = SIZE;
   float accum = 0.0f;
   float lowpass = 0.0f;
 
@@ -95,7 +94,10 @@ void Synth::trigger(float val) {
 
 float Synth::calculate() {
 
-	delaymem[locat++] = out;
+  float incr = SIZE * pitch / SAMPLE_RATE;
+	uint16_t bound = SIZE / incr;
+
+	delaymem[locat++] = -out;
   if (locat >= bound) locat = 0;
   curr = delaymem[locat];
   out = 0.5f * accum;
@@ -106,21 +108,7 @@ float Synth::calculate() {
 
 }
 
-Synth osc1, osc2;
-
-float diode_clip (float input, float thres) {
-  
-  float in, out;
-  float buf = input;
-  in = fabs(input) / thres;
-  if (in <= (1.0f / 3.0f)) out = 2.0f * in;
-  else if (in <= (2.0f / 3.0f)) out = (-3.0f * (in*in)) + (4.0f * in) - (1.0f / 3.0f);
-  else out = 1.0f;
-  out = out * thres;
-  if (buf <= 0.0f) out = -1.0f * out;
-  return out;
-
-}
+Synth osc1;
 
 float echo_verb(float sample, float decay) {
 
@@ -371,7 +359,7 @@ void loop(){
     
     for (int i = 0; i < 32; i++) { 
       
-      int16_t sample = 32767.0f * echo_verb(diode_clip(osc1.calculate()+osc2.calculate(), 0.2f), 0.3f);
+      int16_t sample = 32767.0f * echo_verb(hard_clip(osc1.calculate(), lim), 0.4f);
       WriteReg16(SCI_AICTRL1, sample);
     
     }
@@ -382,20 +370,16 @@ void loop(){
 
 void loop1(){
 
+  lim = randomf(0.05f, 0.5f);
+
   osc1.trigger(randomf(0.001f, 0.5f));
-  osc1.vol = randomf(0.2f, 1.0f);
+  osc1.vol = randomf(0.3f, 1.9f);
   osc1.lowpass = randomf(0.01f, 0.5f);
-  osc1.bound = random(16, SIZE);
+  osc1.pitch = random(110, 880);
 
   uint16_t del = MINBPM;
+  uint8_t div = random(2, 8);
   int tempo = 60000 / del;
-  delay(tempo / 8);
-
-  osc2.trigger(randomf(0.001f, 0.1f));
-  osc2.vol = randomf(0.2f, 1.0f);
-  osc2.lowpass = randomf(0.01f, 0.7f);
-  osc2.bound = random(16, SIZE);
-
-  delay(tempo / 8);
+  delay(tempo / div);
 
 }

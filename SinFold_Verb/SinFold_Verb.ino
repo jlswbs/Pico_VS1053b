@@ -73,6 +73,7 @@ float mix, lim;
 class Synth {
 public:
 	float pointer = 0.0f;
+  float vol = 0.0f;
 	float pitch = 0.0f;
   bool gate = 0;
   float decay = 0.0f;
@@ -106,7 +107,7 @@ float Synth::calculate() {
 
 	float osc = db * (table[a]) + da * (table[b]);
 
-	return d * osc;
+	return vol * (d * osc);
 
 }
 
@@ -396,6 +397,7 @@ void loop1(){
   mix /= 10000.0f;
   
   osc1.gate = 1;
+  osc1.vol = randomf(0.2f, 0.9f);
   osc1.decay = randomf(0.1f, 0.9f) / SAMPLE_RATE * 10;
   osc1.pitch = randomf(50, 880);
 
