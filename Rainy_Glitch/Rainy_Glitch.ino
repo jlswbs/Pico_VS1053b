@@ -1,10 +1,10 @@
-// VLSI 1053 codec PCM mixer - Triangle wave ringmodulator + echoverb //
+// VLSI 1053 codec PCM mixer - Rainy noise glitch + echoverb //
 
 /*
 
-  Pot1 = RM osc frequency
-  Pot2 = echo mix volume
-  Pot3 = tempo
+  Pot1 = filtered noise
+  Pot2 = random gen
+  Pot3 = glitch tempo
  
   Created by JLS 2024
 
@@ -12,7 +12,6 @@
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
-#include "wavetable.h"
 
 #define MP3_CLK   2
 #define MP3_MOSI  3
@@ -61,56 +60,44 @@
 #define MINBPM      60
 #define MAXADC      4095
 #define MINADC      0
-#define WTB_LEN     1024
-#define BUFF_SIZE   2048
+#define BUFF_SIZE   4096
 
 float randomf(float minf, float maxf) { return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31); }
 
 unsigned int buff_pos = 0;
 float buff[BUFF_SIZE];
-float mix;
+
 
 class Synth {
-  public:
-  float pointer = 0.0f;
-  float vol = 0.0f;
-  float pitch = 0.0f;
-  bool gate = 0;
-  float decay = 0.0f;
-  float d = 0.0f;
 
-  float calculate();
+  public:
+  int16_t lp1, lp2, bp2, lowns, sah, lfrt;
+  uint16_t tempo = 1023;
+  uint16_t gen = 128;
+  uint16_t fil = 9;
+  int16_t calculate();
+
 };
 
-float Synth::calculate() {
+int16_t Synth::calculate() {
 
-	int a, b;
-	float da, db;
+  int16_t rndm = rand();
+    
+  if (lfrt-- == 0) {
+    lfrt = (rndm & 256) + tempo;
+    sah = rndm;
+  }
+    
+  bp2 = lp1/4 + (sah/5 - bp2/gen - lp2) / 2 + bp2;
+  lp2 = bp2/2 + lp2 + sah;                   
+  lowns += (rndm-lowns) / 5  + (rndm / 40);
+  lp1 += (rndm/8 - lp1) / fil;
 
-	float wtb_incr = WTB_LEN * (pitch) / SAMPLE_RATE;
-	pointer = pointer + wtb_incr;
-
-	if (pointer > WTB_LEN) pointer = pointer - WTB_LEN;
-
-	a = pointer;
-	da = pointer - a;
-	b = a + 1;
-	db = b - pointer;
-
-	if (b >= WTB_LEN) b = 0;
-  if (gate == 1) d = 1.0f;
-  else d = d;
-
-  d = d - decay;
-  if (d <= 0.0f) d = 0.0f;
-
-	float osc = db * triangle[a] + da * triangle[b];
-
-	return vol * (d * osc);
+  return (lp1 + bp2/3 + lowns/20);
 
 }
 
-Synth osc1, osc2;
+Synth rainy;
 
 float echo_verb(float sample, float decay) {
 
@@ -349,11 +336,6 @@ void setup(){
   WriteReg16(SCI_AICTRL2, 50);      // set pcm volume
   WriteReg16(SCI_AIADDR, 0x0d00);   // start pcm mixer
 
-  osc1.decay = 0.0008f;
-  osc2.decay = 0.0008f;
-  osc1.vol = 1.5f;
-  osc2.vol = 1.0f;
-
 }
 
 void setup1(){
@@ -366,7 +348,7 @@ void loop(){
     
     for (int i = 0; i < 32; i++) { 
       
-      int16_t sample = 32767.0f * echo_verb(osc1.calculate() * osc2.calculate(), mix);
+      int16_t sample = echo_verb(rainy.calculate(), 0.3f);
       WriteReg16(SCI_AICTRL1, sample);
     
     }
@@ -377,22 +359,10 @@ void loop(){
 
 void loop1(){
 
-  mix = map(analogRead(A2), MINADC, MAXADC, 499, 9999);
-  mix /= 10000.0f;
-
-  osc1.gate = 1;
-  osc2.gate = 1;
- 
-  osc1.pitch = randomf(110, 880);
-  osc2.pitch = map(analogRead(A1), MINADC, MAXADC, 10, 3000);
-
+  rainy.tempo = map(analogRead(A3), MINADC, MAXADC, MAXADC, 16);
+  rainy.gen = map(analogRead(A2), MINADC, MAXADC, 2, 256);
+  rainy.fil = map(analogRead(A1), MINADC, MAXADC, 32, 2);
+  
   delay(1);
-
-  osc1.gate = 0;
-  osc2.gate = 0;
-
-  uint16_t del = map(analogRead(A3), MINADC, MAXADC, MINBPM, MAXBPM);
-  int tempo = 60000 / del;
-  delay((tempo / 4) - 1);
 
 }
