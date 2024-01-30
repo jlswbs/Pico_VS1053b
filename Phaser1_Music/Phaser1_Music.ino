@@ -54,18 +54,24 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define SAMPLE_RATE   22050 // original Phaser1 runs at 23972 but uses sample interleaving
+#define SAMPLE_RATE   23972 // original Phaser1 runs at 23972 but uses sample interleaving
 #define MUSIC_FRAME   1024  // now many samples in one tempo unit 2048
 #define COMPILE_ADR   40000 // address for compiled Beepola module, default is 40000
+#define BUFF_SIZE     4096
 
-const int FIXED_BITS = 14;
-const int FIXED_SCALE = (1 << FIXED_BITS);
-const int REVERB_SIZE = 0x2000;
-const int REVERB_LENGTH = (int)(REVERB_SIZE * 0.9f);
-const int REVERB_DECAY = (int)(FIXED_SCALE * 0.7f);
+unsigned int buff_pos = 0;
+float buff[BUFF_SIZE];
 
-int16_t reverbAddr;
-int reverbBuffer[REVERB_SIZE];
+float echo_verb(float sample, float decay) {
+
+  float old_sample = buff[buff_pos];
+  float new_sample = (sample + (old_sample * decay)) / 2.0f;
+  buff[buff_pos] = new_sample;
+  buff_pos = buff_pos + 1;
+  if (buff_pos == BUFF_SIZE) buff_pos = 0; 
+  return new_sample;
+
+}
 
 #define NOTE_C(octave)  ((274334351/SAMPLE_RATE)>>(6-octave))
 #define NOTEhC(octave)  ((290646917/SAMPLE_RATE)>>(6-octave))
@@ -389,17 +395,10 @@ void loop(){
     for (int i = 0; i < 32; i++) {
 
       int16_t sample;
-      if (output_state) sample = 16384;
-      else sample = -16384;
+      if (output_state) sample = 32767;
+      else sample = -32767;
 
-      int reverb = ((int)reverbBuffer[reverbAddr] * REVERB_DECAY) >> FIXED_BITS;
-      reverb += sample;
-      reverbBuffer[reverbAddr] = reverb;
-      reverbAddr++;
-      if (reverbAddr > REVERB_LENGTH) reverbAddr = 0;
-
-      int16_t output = sample + (reverbBuffer[reverbAddr]>>3);
-      WriteReg16(SCI_AICTRL1, output);
+      WriteReg16(SCI_AICTRL1, echo_verb(sample, 0.3f));
 
       if (parser_sync) --parser_sync;
       if (!drum_sample){
