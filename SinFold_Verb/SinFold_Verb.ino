@@ -75,6 +75,7 @@ public:
 	float pointer = 0.0f;
   float vol = 0.0f;
 	float pitch = 0.0f;
+  float lim = 0.0f;
   bool gate = 0;
   float decay = 0.0f;
   float d = 0.0f;
@@ -104,29 +105,20 @@ float Synth::calculate() {
   d = d - decay;
   if (d <= 0.0f) d = 0.0f;
 
-
 	float osc = db * (table[a]) + da * (table[b]);
+
+  while (osc > lim || osc < -lim){
+    
+    if (osc > lim) osc = lim - (osc - lim);
+    else if (osc < -lim) osc = -lim + (-osc-lim);
+    
+  }
 
 	return vol * (d * osc);
 
 }
 
 Synth osc1;
-
-float fold(float x, float lim) {
-  
-  float out = x;
-  
-  while (out > lim || out < -lim){
-    
-    if (out > lim) out = lim - (out - lim);
-    else if (out < -lim) out = -lim + (-out-lim);
-    
-  }
-    
-  return out;
-
-}
 
 float echo_verb(float sample, float decay) {
 
@@ -379,7 +371,7 @@ void loop(){
     
     for (int i = 0; i < 32; i++) { 
       
-      int16_t sample = 32767.0f * echo_verb(fold(osc1.calculate(), lim), mix);
+      int16_t sample = 32767.0f * echo_verb(osc1.calculate(), mix);
       WriteReg16(SCI_AICTRL1, sample);
     
     }
@@ -397,7 +389,8 @@ void loop1(){
   mix /= 10000.0f;
   
   osc1.gate = 1;
-  osc1.vol = randomf(0.2f, 0.9f);
+  osc1.vol = randomf(0.1f, 0.9f);
+  osc1.lim = lim;
   osc1.decay = randomf(0.1f, 0.9f) / SAMPLE_RATE * 10;
   osc1.pitch = randomf(50, 880);
 
