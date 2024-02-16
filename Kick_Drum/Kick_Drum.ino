@@ -68,9 +68,8 @@ class Synth {
 public:
 
   bool trig = 0;
-  bool noise = 0;
+  int noise = 0;
   int wave = 0;
-  int h = 0;
   int i = 0;
   int j = 0;
   float k = 1;
@@ -89,27 +88,28 @@ public:
 int Synth::calculate() {
 
   if (trig == 1) {
-    h = 0;
+
     i = 0;
     j = 0;
     k = 1.0f;
+
   }
 
   int freq = 12 * (1.0f - tone);
 
   if (i > 179) {
 
-    h ++;
     i = 0;
     j = j + 5;
     k =  k * (94 - (32 - decay)) / 100 - 10 / 100;
 
   }
 
-  delayMicroseconds(j*freq);
+  delayMicroseconds(j * freq);
 
-  if (noise) wave = (fand[rand()%180] * 32 + harmo[i] * (32 - harm)) >> 2;
-  else wave = fand[i] * 32 + harmo[i] * (32 - harm);
+  if (noise == 0) wave = fand[i] * 32 + harmo[i] * (32 - harm);
+  if (noise == 1) wave = (fand[i] * 32 * harmo[i] * (32 - harm)) >> 12;
+  if (noise == 2) wave = (fand[rand()%180] * 32 + harmo[i] * (32 - harm)) >> 2;
 
   i ++;
 
@@ -369,7 +369,7 @@ void loop(){
 void loop1(){
 
   kick.trig = 1;
-  kick.noise = rand()%2;
+  kick.noise = rand() % 3;
   kick.vol = randomf(0.4f, 0.9f);
   kick.decay = map(analogRead(A2), MINADC, MAXADC, 8, 32);
   kick.harm = map(analogRead(A1), MINADC, MAXADC, 31, 0);
