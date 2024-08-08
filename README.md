@@ -9,3 +9,4 @@ Software:
 - https://github.com/dennisppaul/klangstrom-arduino
 - https://github.com/algomusic/M16
 - https://github.com/garygru/yummyDSP
+- https://github.com/assemblu/ApalisLite
