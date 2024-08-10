@@ -1,4 +1,4 @@
-// VLSI 1053 codec PCM mixer - Vosim oscillator //
+// VLSI 1053 codec PCM mixer - Vosim oscillator - (200Mhz overclock) //
 // https://github.com/assemblu/ApalisLite //
 
 #include "hardware/structs/rosc.h"
@@ -282,9 +282,9 @@ void setup(){
 
   osc.Init(SAMPLE_RATE);
   osc.SetFreq(110.0f);
-  osc.SetForm1Freq(220.0f);
-  osc.SetForm2Freq(330.0f);
-  osc.SetShape(1.0f);
+  osc.SetForm1Freq(1390.0f);
+  osc.SetForm2Freq(817.0f);
+  osc.SetShape(0.5f);
 
 }
 
@@ -305,9 +305,9 @@ void loop(){
 
 void loop1(){
 
-  osc.SetFreq(random(50, 440));
-  osc.SetForm1Freq(random(220, 880));
-  osc.SetForm2Freq(random(110, 440));
+  osc.SetFreq(random(50, 220));
+  osc.SetForm1Freq(random(880, 1400));
+  osc.SetForm2Freq(random(440, 880));
 
   int tempo = 60000 / BPM;
   delay(tempo / 2);

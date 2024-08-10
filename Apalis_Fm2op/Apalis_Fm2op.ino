@@ -1,4 +1,4 @@
-// VLSI 1053 codec PCM mixer - FM 2 operator oscillator //
+// VLSI 1053 codec PCM mixer - FM 2 operator oscillator - (200Mhz overclock) //
 // https://github.com/assemblu/ApalisLite //
 
 #include "hardware/structs/rosc.h"

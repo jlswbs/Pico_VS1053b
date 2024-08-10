@@ -1,4 +1,4 @@
-// VLSI 1053 codec PCM mixer - Formant oscillator //
+// VLSI 1053 codec PCM mixer - Formant oscillator - (200Mhz overclock) //
 // https://github.com/assemblu/ApalisLite //
 
 #include "hardware/structs/rosc.h"
@@ -279,7 +279,7 @@ void setup(){
   WriteReg16(SCI_AIADDR, 0x0d00);   // start pcm mixer
 
   osc.Init(SAMPLE_RATE);
-  osc.SetFormantFreq(220.0f);
+  osc.SetFormantFreq(110.0f);
   osc.SetCarrierFreq(440.0f);
 
 }
@@ -301,7 +301,7 @@ void loop(){
 
 void loop1(){
 
-  osc.SetFormantFreq(random(220, 440));
+  osc.SetFormantFreq(random(110, 440));
   osc.SetCarrierFreq(random(55, 110));
 
   int tempo = 60000 / BPM;
