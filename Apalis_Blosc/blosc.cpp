@@ -1,8 +1,6 @@
 #include "blosc.h"
 #include <math.h>
 
-using namespace apalis;
-
 void BlOsc::Init(float sample_rate)
 {
     sampling_freq_  = sample_rate;

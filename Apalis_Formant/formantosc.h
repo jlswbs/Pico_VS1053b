@@ -3,12 +3,6 @@
 #define DSY_FORMANTOSCILLATOR_H
 
 #include <stdint.h>
-#ifdef __cplusplus
-
-/** @file formantosc.h */
-
-namespace apalis
-{
 
 class FormantOscillator
 {
@@ -58,6 +52,4 @@ class FormantOscillator
 
   };
 
-}
-#endif
 #endif

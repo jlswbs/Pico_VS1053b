@@ -3,10 +3,6 @@
 #define DSY_BLOSC_H
 
 #include <stdint.h>
-#ifdef __cplusplus
-
-namespace apalis
-{
 
 class BlOsc
 {
@@ -65,6 +61,4 @@ class BlOsc
     float ProcessSaw();
 };
 
-}
-#endif
 #endif

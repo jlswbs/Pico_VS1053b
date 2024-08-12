@@ -1,7 +1,5 @@
 #include "fm2.h"
 
-using namespace apalis;
-
 void Fm2::Init(float samplerate)
 {
     car_.Init(samplerate);

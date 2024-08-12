@@ -4,10 +4,6 @@
 
 #include <stdint.h>
 #include "oscillator.h"
-#ifdef __cplusplus
-
-namespace apalis
-{
 
 class Fm2
 {
@@ -55,6 +51,4 @@ class Fm2
     float      freq_, lfreq_, ratio_, lratio_;
 };
 
-}
-#endif
 #endif

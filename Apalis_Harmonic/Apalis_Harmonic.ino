@@ -1,9 +1,9 @@
-// VLSI 1053 codec PCM mixer - FM 2 operator oscillator - (200Mhz overclock) //
+// VLSI 1053 codec PCM mixer - Harmonic oscillator - (200Mhz overclock) //
 // https://github.com/assemblu/ApalisLite //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
-#include "fm2.h"
+#include "harmonic.h"
 
 #define MP3_CLK   2
 #define MP3_MOSI  3
@@ -47,10 +47,11 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define SAMPLE_RATE 22050
+#define SAMPLE_RATE 11025
+#define HARMONICS   16
 #define BPM         120
 
-Fm2 osc;
+HarmonicOscillator osc;
 
 float randomf(float minf, float maxf) { return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31); }
 
@@ -281,8 +282,9 @@ void setup(){
   WriteReg16(SCI_AIADDR, 0x0d00);   // start pcm mixer
 
   osc.Init(SAMPLE_RATE);
-  osc.SetFrequency(220.0f);
-  osc.SetRatio(2.0f);
+  for (int i = 0; i < HARMONICS; ++i) osc.SetSingleAmp(1.0f/HARMONICS, i);
+  osc.SetFirstHarmIdx(1);
+  osc.SetFreq(220.f);
 
 }
 
@@ -297,14 +299,13 @@ void loop(){
     
     }
 
-  }
+  } 
 
 }
 
 void loop1(){
 
-  osc.SetFrequency(random(110, 440));
-  osc.SetRatio(randomf(0.1f, 4.0f));
+  osc.SetFirstHarmIdx(random(1, HARMONICS));
 
   int tempo = 60000 / BPM;
   delay(tempo / 2);

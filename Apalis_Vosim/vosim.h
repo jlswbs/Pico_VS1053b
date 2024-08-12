@@ -3,12 +3,6 @@
 #define DSY_VOSIM_H
 
 #include <stdint.h>
-#ifdef __cplusplus
-
-/** @file vosim.h */
-
-namespace apalis
-{
 
 class VosimOscillator
 {
@@ -60,6 +54,4 @@ class VosimOscillator
     float carrier_shape_;
 };
 
-}
-#endif
 #endif

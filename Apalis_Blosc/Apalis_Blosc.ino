@@ -50,7 +50,7 @@
 #define SAMPLE_RATE 22050
 #define BPM         120
 
-apalis::BlOsc osc;
+BlOsc osc;
 
 float randomf(float minf, float maxf) { return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31); }
 

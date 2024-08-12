@@ -3,11 +3,6 @@
 #define DSY_ZOSCILLATOR_H
 
 #include <stdint.h>
-#ifdef __cplusplus
-
-/** @file zoscillator.h */
-namespace apalis
-{
 
 class ZOscillator
 {
@@ -62,6 +57,4 @@ class ZOscillator
     float mode_, mode_new_;
 };
 
-}
-#endif
 #endif

@@ -47,10 +47,10 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define SAMPLE_RATE 22050
+#define SAMPLE_RATE 11025
 #define BPM         120
 
-apalis::VosimOscillator osc;
+VosimOscillator osc;
 
 float randomf(float minf, float maxf) { return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31); }
 

@@ -50,7 +50,7 @@
 #define SAMPLE_RATE 22050
 #define BPM         120
 
-apalis::Oscillator osc;
+Oscillator osc;
 
 static inline void seed_random_from_rosc(){
   

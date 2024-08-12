@@ -1,7 +1,6 @@
 #include "dsp.h"
 #include "oscillator.h"
 
-using namespace apalis;
 static inline float Polyblep(float phase_inc, float t);
 
 constexpr float TWO_PI_RECIP = 1.0f / TWOPI_F;

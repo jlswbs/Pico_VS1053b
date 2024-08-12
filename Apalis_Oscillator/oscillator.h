@@ -3,12 +3,7 @@
 #define DSY_OSCILLATOR_H
 #include <stdint.h>
 #include "dsp.h"
-#ifdef __cplusplus
 
-namespace apalis
-{
-/** Synthesis of several waveforms, including polyBLEP bandlimited waveforms.
-*/
 class Oscillator
 {
   public:
@@ -118,6 +113,4 @@ class Oscillator
     bool    eor_, eoc_;
 };
 
-}
-#endif
 #endif

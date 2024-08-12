@@ -2,8 +2,6 @@
 #include "formantosc.h"
 #include <math.h>
 
-using namespace apalis;
-
 void FormantOscillator::Init(float sample_rate)
 {
     carrier_phase_ = 0.0f;

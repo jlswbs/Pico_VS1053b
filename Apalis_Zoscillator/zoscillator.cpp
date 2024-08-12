@@ -2,8 +2,6 @@
 #include "zoscillator.h"
 #include <math.h>
 
-using namespace apalis;
-
 void ZOscillator::Init(float sample_rate)
 {
     sample_rate_ = sample_rate;
