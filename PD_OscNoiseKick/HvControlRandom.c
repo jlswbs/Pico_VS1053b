@@ -20,7 +20,7 @@
 // http://en.wikipedia.org/wiki/Lehmer_random_number_generator
 
 hv_size_t cRandom_init(ControlRandom *o, int seed) {
-  o->state = (seed != 0) ? seed : 1;
+  o->state = (seed != 0) ? rand()%seed : 1;
   return 0;
 }
 

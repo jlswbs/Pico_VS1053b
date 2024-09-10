@@ -1,4 +1,4 @@
-//  VS1053b PCM mode stereo 8bit 22050 Hz - PureData oscillator noise kick noodle - 250MHz //
+//  VS1053b PCM mode stereo 8bit 22050 Hz - PureData oscillator noise kick noodle - 250MHz CPU speed //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
@@ -48,11 +48,15 @@
 
 #define SAMPLE_RATE 22050
 
-Heavy_prog pd_prog(SAMPLE_RATE);
-
 float samples[2];
 
-static inline void seed_random_from_rosc(){
+class Trand {
+
+  public: Trand();
+
+};
+
+Trand::Trand() {
   
   uint32_t random = 0;
   uint32_t random_bit;
@@ -68,7 +72,11 @@ static inline void seed_random_from_rosc(){
   }
   
   srand(random);
+
 }
+
+Trand Trand;
+Heavy_prog pd_prog(SAMPLE_RATE);
 
 void WriteReg(unsigned char address, unsigned char highbyte, unsigned char lowbyte){
   
@@ -147,7 +155,6 @@ void load_header() {
 
 void setup(){
 
-  seed_random_from_rosc();
   analogReadResolution(12);
     
   pinMode(MP3_DREQ, INPUT);
