@@ -76,6 +76,7 @@ Trand::Trand() {
 }
 
 Trand Trand;
+
 Heavy_prog pd_prog(SAMPLE_RATE);
 
 void WriteReg(unsigned char address, unsigned char highbyte, unsigned char lowbyte){
