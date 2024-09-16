@@ -182,17 +182,17 @@ void setup(){
 
 void loop(){
 
-  while (!digitalRead(MP3_DREQ)) {}
-
   pd_prog.processInlineInterleaved(samples, samples, 1);
 
-  int8_t l = 128 + (127.0f * samples[0]);
-  int8_t r = 128 + (127.0f * samples[1]);
+  while (!digitalRead(MP3_DREQ)) {}
+    
+    int8_t l = 128 + (127.0f * samples[0]);
+    int8_t r = 128 + (127.0f * samples[1]);
 
-  digitalWrite(MP3_XDCS, LOW);
-  PicoSPI0.transfer(l);
-  PicoSPI0.transfer(r);
-  digitalWrite(MP3_XDCS, HIGH);
+    digitalWrite(MP3_XDCS, LOW);
+    PicoSPI0.transfer(l);
+    PicoSPI0.transfer(r);
+    digitalWrite(MP3_XDCS, HIGH);
 
 }
 
