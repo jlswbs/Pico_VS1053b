@@ -1,4 +1,4 @@
-// VS1053 DSP - Grains sampler mp3 stream hack //
+// VS1053 DSP mp3 stream hack - Grains sampler //
 
 /*
 
@@ -6,7 +6,7 @@
   Pot2 = samplerate
   Pot3 = sample grains
  
-  Created by JLS 2023
+  Created by JLS 2024
 
 */
 
@@ -118,8 +118,6 @@ unsigned int ReadReg(unsigned char address){
   return resultvalue;
   
 }
-
-void SetVolume(unsigned char left, unsigned char right){ WriteReg(SCI_VOL, left, right); }
 
 const uint8_t samples[] = {
 0x49,0x44,0x33,0x04,0x00,0x00,0x00,0x00,0x01,0x54,0x54,0x43,0x4F,0x4E,0x00,0x00,
@@ -3591,21 +3589,21 @@ void setup(){
   pinMode(MP3_XDCS, OUTPUT);
   pinMode(MP3_RST, OUTPUT);
 
-  PicoSPI0.configure (MP3_CLK, MP3_MOSI, MP3_MISO, MP3_CS, 1000000, 0, true);
+  PicoSPI0.configure (MP3_CLK, MP3_MOSI, MP3_MISO, MP3_CS, 4000000, 0, true);
   PicoSPI0.transfer(0xFF);
 
   digitalWrite(MP3_RST, HIGH);
   digitalWrite(MP3_CS, HIGH);
   digitalWrite(MP3_XDCS, HIGH);
 
-  SetVolume(60, 60); //Set initial volume (20 = -10dB)
-  WriteReg(SCI_CLOCKF, 0x60, 0x00); //Set multiplier to 3.0x
+  WriteReg16(SCI_CLOCKF, 0x6000);   // set multiplier to 3.0x
+  WriteReg16(SCI_VOL, 0x3F3F);      // set volume
 
 }
 
 void loop(){
 
-  uint16_t srate = map(analogRead(A2), MINADC, MAXADC, 1000, 22050);
+  uint16_t srate = map(analogRead(A2), MINADC, MAXADC, 44100, 4410);
   WriteReg16(SCI_AUDATA, srate);  // set samplerate   
 
   int grains = 256 * map(analogRead(A3), MINADC, MAXADC, 1, sizeof(samples)/1024);
