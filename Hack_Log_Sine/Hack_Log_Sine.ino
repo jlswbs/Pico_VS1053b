@@ -115,7 +115,7 @@ void setup(){
   pinMode(MP3_XDCS, OUTPUT);
   pinMode(MP3_RST, OUTPUT);
 
-  PicoSPI0.configure (MP3_CLK, MP3_MOSI, MP3_MISO, MP3_CS, 1000000, 0, true);
+  PicoSPI0.configure (MP3_CLK, MP3_MOSI, MP3_MISO, MP3_CS, 4000000, 0, true);
   PicoSPI0.transfer(0xFF);
 
   digitalWrite(MP3_RST, HIGH);
