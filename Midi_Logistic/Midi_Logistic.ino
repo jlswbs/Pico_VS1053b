@@ -45,9 +45,8 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define MAXTEMPO  14  // 350 BPM 16th note
-#define MINTEMPO  111 // 45 BPM 16th note
-#define POLY      6   // note polyphony
+#define BPM   120
+#define POLY  6   // note polyphony
 
 float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31);}
   
@@ -443,9 +442,9 @@ void loop(){
   if (drumon == true) note_on(9, 0, 36, volb & 127); // bass drum
   drumon = !drumon;
 
-  uint8_t delay_ms = MINTEMPO;
+  int tempo = 60000 / BPM;
 
-  delay(2 * delay_ms);
+  delay(tempo / 4);
   
   uint8_t rel_off = note[1] % 8;
   
@@ -456,6 +455,6 @@ void loop(){
   if(rel_off == 4) all_sound_off(4);
   if(rel_off == 5) all_sound_off(5);
 
-  delay (delay_ms);
+  delay (tempo / 4);
 
 }

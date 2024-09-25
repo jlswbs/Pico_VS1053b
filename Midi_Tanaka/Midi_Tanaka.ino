@@ -1,4 +1,19 @@
-// VS1053 MIDI - Simplest chaotic equation music //
+// VS1053 MIDI - Tanaka neuron music //
+
+/*
+
+  Based to Tanaka neuron model
+
+  Pot1 = chaos constant
+  Pot2 = instruments
+  Pot3 = note quantiser
+
+  Channel 1-6 notes 
+  Channel 10 drums
+ 
+  Created by JLS 2024
+
+*/
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
@@ -45,13 +60,17 @@
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define BPM   120
-#define POLY  6   // note polyphony
-
-float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31);}
+#define BPM     120
+#define POLY    6     // note polyphony
+#define MAXADC  4095  // max ADC value
+#define MINADC  0     // min ADC value
   
-  float a = 0.0f;
   float x = 0.1f;
+  float y = 0.1f;
+  float a = 0.5f;
+  float k = 0.7f;
+  float e = 0.05f;
+  float u = 0.0f;
   uint8_t note[POLY];
   bool drumon = true;
 
@@ -376,7 +395,8 @@ void load_code(void){
 void setup(){
 
   seed_random_from_rosc();
-  
+  analogReadResolution(12);
+    
   pinMode(MP3_DREQ, INPUT);
   pinMode(MP3_CS, OUTPUT);
   pinMode(MP3_XDCS, OUTPUT);
@@ -392,7 +412,7 @@ void setup(){
   load_code();
 
   WriteReg16(SCI_VOL, 0x3F3F);    // set volume
-  WriteReg16(SCI_CLOCKF, 0x8BE8); // Set multiplier to 3.5x
+  WriteReg16(SCI_CLOCKF, 0x8BE8); // set multiplier to 3.5x
 
   uint8_t room = 0;
 
@@ -410,25 +430,30 @@ void setup(){
   panning(4, 40);
   panning(5, 88);
 
-  a = randomf(1.299f, 1.999f);
-
 }
 
 void loop(){
 
+  e = map(analogRead(1), 0, MAXADC, 449, 579);
+  e /= 10000.0f;  
+
   for (int i = 0; i < POLY; i++){
   
     float nx = x;
-    x = a - powf(nx, 2.0f);        
-    note[i] = 64.0f + (32.0f * x);
+    float ny = y;
+
+    x = ny;
+    y = k * ny + nx + a - u;      
+    u = 1.0f / (1.0f + expf(-ny / e));
+    note[i] = 64.0f + (128.0f * x);
     
   }
   
   for (int i = 0; i < POLY; i++){
   
-    uint8_t notes = map(note[i], 0, 127, 12, 72); // quantise note C1-c4
-    uint8_t prog = map(note[i], 0, 127, note[3], note[5]);
-    if (prog >= 18 && prog <= 23) prog = 0;  // replace some instruments to grand piano
+    uint8_t notes = map(analogRead(A3), 0, MAXADC, 12, 28+(note[i]/2)); // quantise note
+    uint8_t prog = map(analogRead(A2), 0, MAXADC, 0, note[i]);
+    if (prog >= 18 && prog <= 23) prog = 0; // replace some instruments to grand piano
     uint8_t vol = map(note[i], 0, 127, 32, 96);
     note_on(i, prog & 123, notes & 127, vol & 127);
 
@@ -446,7 +471,7 @@ void loop(){
 
   delay(tempo / 4);
   
-  uint8_t rel_off = note[1] % 8;
+  uint8_t rel_off = note[1] % 7;
   
   if(rel_off == 0) all_sound_off(0);
   if(rel_off == 1) all_sound_off(1);
