@@ -56,7 +56,7 @@
   float D2A[WIDTH]; 
   float D2I[WIDTH];
   float p[6];
-  float dt = 0.07f;
+  float dt = 0.05f;
 
 class Trand {
 
@@ -91,8 +91,8 @@ void rndrule(){
 
   for(int k=0;k<WIDTH; k++) {
     
-    A[k] = randomf(-1.0f, 1.0f);
-    I[k] = randomf(-1.0f, 1.0f);
+    A[k] = randomf(0.0f, 1.0f);
+    I[k] = randomf(0.0f, 1.0f);
     
   }
 
@@ -219,8 +219,8 @@ void loop(){
     A[i] = A[i] + dt * (5.0f * A[i] * A[i] * A[i] / (I[i] * I[i]) + p[0] - p[1] * A[i] + p[2] * D2A[i]);
     I[i] = I[i] + dt * (A[i] * A[i] * A[i] - p[3] * I[i] + p[4] * D2I[i] + p[5]);
 
-    uint8_t l = 255 - (50 * A[i]);
-    uint8_t r = 255 - (50 * I[i]);
+    uint8_t l = 250 - (50 * A[i]);
+    uint8_t r = 250 - (50 * I[i]);
 
     digitalWrite(MP3_XDCS, LOW);
     PicoSPI0.transfer(l);
@@ -233,27 +233,27 @@ void loop(){
 
 void loop1(){
 
-  float pa = map(analogRead(A1), MINADC, MAXADC, 999, 9999);
+  float pa = map(analogRead(A1), MINADC, MAXADC, 0, 9999);
   pa /= 10000.0f;
   p[0] = pa;
 
-  float pb = map(analogRead(A2), MINADC, MAXADC, 999, 149999);
+  float pb = map(analogRead(A2), MINADC, MAXADC, 0, 149999);
   pb /= 10000.0f;
   p[1] = pb;
 
-  float pc = map(analogRead(A3), MINADC, MAXADC, 39999, 999);
+  float pc = map(analogRead(A3), MINADC, MAXADC, 39999, 0);
   pc /= 10000.0f;
   p[2] = pc;
 
-  float pd = map(analogRead(A3), MINADC, MAXADC, 999, 149999);
+  float pd = map(analogRead(A3), MINADC, MAXADC, 0, 149999);
   pd /= 10000.0f;
   p[3] = pd;
 
-  float pe = map(analogRead(A2), MINADC, MAXADC, 999, 39999);
+  float pe = map(analogRead(A2), MINADC, MAXADC, 0, 39999);
   pe /= 10000.0f;
   p[4] = pe;
 
-  float pf = map(analogRead(A1), MINADC, MAXADC, 999, 19999);
+  float pf = map(analogRead(A1), MINADC, MAXADC, 0, 19999);
   pf /= 10000.0f;
   p[5] = pf;
 
