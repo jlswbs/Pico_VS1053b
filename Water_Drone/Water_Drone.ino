@@ -89,17 +89,6 @@ float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf 
 
 void rndrule(){
 
-  for (int y = 0; y < HEIGHT; y++) {
-
-    for (int x = 0; x < WIDTH; x++) {
-
-      p[x][y] = 0;
-      v[x][y] = 0;
-    
-    }
-  
-  }
-
   for (int i = 0; i < NUMS; i++) v[rand()%WIDTH][rand()%HEIGHT] = randomf(-TWO_PI, TWO_PI);
 
 }
@@ -228,8 +217,8 @@ void loop(){
 
       p[x][y] += v[x][y];
 
-      uint8_t l = 255 * p[x][y];
-      uint8_t r = 255 * v[x][y];
+      uint8_t l = 255.0f * constrain(p[x][y], 0.0f, 1.0f);
+      uint8_t r = 255.0f * constrain(v[x][y], 0.0f, 1.0f);
 
       digitalWrite(MP3_XDCS, LOW);
       PicoSPI0.transfer(l);
