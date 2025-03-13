@@ -1,4 +1,4 @@
-//  VS1053b PCM mode stereo 8bit 22050 Hz - Faust DSP Kick - 200Mhz overclock //
+//  VS1053b PCM mode stereo 8bit 22050 Hz - Faust DSP Kick //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
@@ -49,8 +49,27 @@ mydsp* dsp;
 #define SM_CLK_RANGE      0x0F
 
 #define SAMPLE_RATE 22050
+#define BPM         120
 
 float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31);}
+
+static inline void seed_random_from_rosc(){
+  
+  uint32_t random = 0;
+  uint32_t random_bit;
+  volatile uint32_t *rnd_reg = (uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
+
+  for (int k = 0; k < 32; k++) {
+    while (1) {
+      random_bit = (*rnd_reg) & 1;
+      if (random_bit != ((*rnd_reg) & 1)) break;
+    }
+    random = (random << 1) | random_bit;
+  }
+
+  srand(random);
+
+}
 
 void WriteReg(unsigned char address, unsigned char highbyte, unsigned char lowbyte){
   
@@ -131,8 +150,6 @@ void setup(){
 
   dsp = newmydsp();
   initmydsp(dsp, SAMPLE_RATE);
-
-  analogReadResolution(12);
     
   pinMode(MP3_DREQ, INPUT);
   pinMode(MP3_CS, OUTPUT);
@@ -157,6 +174,13 @@ void setup(){
 }
 
 
+void setup1(){
+
+  seed_random_from_rosc();
+  analogReadResolution(12);
+
+}
+
 void loop(){
 
   while (!digitalRead(MP3_DREQ)) {}
@@ -177,15 +201,16 @@ void loop(){
 
 void loop1(){
 
-  dsp->fHslider3 = random(44, 880); // frequency Hz
-  dsp->fHslider2 = randomf(0.1f, 23.9f); // depth mod. 0..24
-  dsp->fHslider6 = randomf(0.5f, 0.99f); // gain 0..1
+  dsp->fHslider3 = 55 + rand()%650; // frequency Hz
+  dsp->fHslider2 = randomf(0.0f, 23.9f); // depth mod. 0..24
+  dsp->fHslider6 = randomf(0.1f, 0.99f); // gain 0..1
   dsp->fButton0 = 1.0f; // gate on
 
-  delay(10);
+  delay(1);
 
   dsp->fButton0 = 0.0f; // gate off
 
-  delay(230);
+  int tempo = 60000 / BPM;
+  delay((tempo / 2) - 1);
 
 }
