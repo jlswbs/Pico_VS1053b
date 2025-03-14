@@ -53,7 +53,8 @@ SIGNAL_TYPE buffer[1];
 #define SM_LINE1          0x0E
 #define SM_CLK_RANGE      0x0F
 
-#define SAMPLERATE        22050
+#define SAMPLERATE  22050
+#define BPM         120
 
 static inline void seed_random_from_rosc(){
   
@@ -71,6 +72,7 @@ static inline void seed_random_from_rosc(){
   }
   
   srand(random);
+
 }
 
 void WriteReg(unsigned char address, unsigned char highbyte, unsigned char lowbyte){
@@ -257,9 +259,6 @@ void load_code(void){
 }
 
 void setup() {
-
-  seed_random_from_rosc();
-  analogReadResolution(12);
     
   pinMode(MP3_DREQ, INPUT);
   pinMode(MP3_CS, OUTPUT);
@@ -289,6 +288,13 @@ void setup() {
 
 }
 
+void setup1(){
+
+  seed_random_from_rosc();
+  analogReadResolution(12);
+
+}
+
 void loop() {
 
   if (ReadReg(SCI_AICTRL0) > 32){
@@ -307,8 +313,9 @@ void loop() {
 
 void loop1() {
 
-  mOsc.set_frequency(440 + rand()%1760);
+  mOsc.set_frequency(220 + rand()%2000);
 
-  delay(120);
+  int tempo = 60000 / BPM;
+  delay(tempo / 4);
 
 }
