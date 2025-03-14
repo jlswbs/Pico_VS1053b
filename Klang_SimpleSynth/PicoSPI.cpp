@@ -10,10 +10,10 @@
 
 static void select_higher_drive_for_pin (int gpio)
 {
-  hw_write_masked (&padsbank0_hw->io[gpio],
+  hw_write_masked (&pads_bank0_hw->io[gpio],
 		   (3 << PADS_BANK0_GPIO0_DRIVE_LSB),  // code 3 is 12mA drive
 		   PADS_BANK0_GPIO0_DRIVE_BITS) ;
-  hw_write_masked (&padsbank0_hw->io[gpio],
+  hw_write_masked (&pads_bank0_hw->io[gpio],
 		   (1 << PADS_BANK0_GPIO0_SLEWFAST_LSB), // 1 means fast slew
 		   PADS_BANK0_GPIO0_SLEWFAST_BITS) ;
 }
