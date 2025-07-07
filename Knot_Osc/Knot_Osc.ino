@@ -1,5 +1,15 @@
 //  VS1053b PCM mode stereo 8bit 22050 Hz - Knot geometric oscillator //
 
+/*
+
+  Pot1 = derivative time x
+  Pot2 = derivative time y
+  Pot3 = not used
+ 
+  Created by JLS 2025
+
+*/
+
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
 
