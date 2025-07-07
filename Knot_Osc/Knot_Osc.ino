@@ -1,15 +1,5 @@
 //  VS1053b PCM mode stereo 8bit 22050 Hz - Knot geometric oscillator //
 
-/*
-
-  Pot1 = derivative time x
-  Pot2 = derivative time y
-  Pot3 = not used
- 
-  Created by JLS 2025
-
-*/
-
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
 
@@ -56,8 +46,7 @@
 #define SM_CLK_RANGE      0x0F
 
 #define SAMPLE_RATE 22050
-#define MAXADC    4095  // max ADC value
-#define MINADC    0     // min ADC value
+#define BPM         120
 
   float x = 0.0f;
   float y = 0.0f;
@@ -66,6 +55,8 @@
   float a = 1.5f;
   float dtx = 0.01f;
   float dty = 0.01f;
+
+float randomf(float minf, float maxf) {return minf + (rand()%(1UL << 31))*(maxf - minf) / (1UL << 31);}
 
 static inline void seed_random_from_rosc(){
   
@@ -213,10 +204,12 @@ void setup1(){
 
 void loop1(){
 
-  dtx = map(analogRead(A1), MINADC, MAXADC, 49, 9999);
-  dtx /= 10000.0f;
+  dtx = randomf(0.0049f, 0.9999f);
+  dty = randomf(0.0049f, 0.9999f);
+  
+  a = randomf(0.009f, 4.99f);
 
-  dty = map(analogRead(A2), MINADC, MAXADC, 49, 9999);
-  dty /= 10000.0f;
+  int tempo = 60000 / BPM;
+  delay(tempo / 3);
 
 }
