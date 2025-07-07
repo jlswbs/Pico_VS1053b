@@ -77,6 +77,7 @@ public:
   float t = 0.0f;
   float a = 1.5f;
   float dt = 0.01f;
+  float vol = 0.0f;
 
   int calculate();
 
@@ -99,7 +100,7 @@ int Synth::calculate() {
     
   t = t + dt;
 
-  return 128 + (42 * x);
+  return 42.0f * (vol * x);
 
 }
 
@@ -208,7 +209,7 @@ void loop(){
 
   while (!digitalRead(MP3_DREQ)) {}
 
-  uint8_t l = bass.calculate();
+  uint8_t l = 128 + bass.calculate();
   uint8_t r = -l;
 
   digitalWrite(MP3_XDCS, LOW);
@@ -230,6 +231,7 @@ void loop1(){
   bass.trig = true;
   bass.a = randomf(0.009f, 0.99f);
   bass.dt = randomf(0.009f, 0.0299f);
+  bass.vol = randomf(0.49f, 0.99f);
 
   delay(1);
 
