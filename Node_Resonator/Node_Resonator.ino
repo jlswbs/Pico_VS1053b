@@ -173,8 +173,8 @@ void setup() {
   digitalWrite(MP3_CS, HIGH);
   digitalWrite(MP3_XDCS, HIGH);
   load_header();
-  WriteReg16(0x03, 0x6000);
-  WriteReg16(0x0B, 0x4F4F);
+  WriteReg16(0x03, 0x9800);
+  WriteReg16(0x0B, 0x3F3F);
   PicoSPI0.configure(MP3_CLK, MP3_MOSI, MP3_MISO, MP3_CS, 16000000, 0, true);
   PicoSPI0.transfer(0xFF);
 
