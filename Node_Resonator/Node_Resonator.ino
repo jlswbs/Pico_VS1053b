@@ -125,16 +125,12 @@ void seed_random_safe() {
   srand(seed);
 }
 
-void WriteReg(unsigned char address, unsigned char highbyte, unsigned char lowbyte) {
-  while(!digitalRead(MP3_DREQ));
-  digitalWrite(MP3_CS, LOW);
-  PicoSPI0.transfer(0x02);
-  PicoSPI0.transfer(address);
-  PicoSPI0.transfer(highbyte);
-  PicoSPI0.transfer(lowbyte);
-  while(!digitalRead(MP3_DREQ));
-  digitalWrite(MP3_CS, HIGH);
-}
+const uint8_t wav_header[44] = {
+  'R','I','F','F', 0x24,0x80,0x00,0x00, 'W','A','V','E',
+  'f','m','t',' ', 0x10,0x00,0x00,0x00, 0x01,0x00,0x02,0x00,
+  0x22,0x56,0x00,0x00, 0x88,0x58,0x01,0x00, 0x04,0x00,0x10,0x00,
+  'd','a','t','a', 0x00,0x80,0x00,0x00
+};
 
 void WriteReg16(unsigned char address, unsigned int databyte) {
   while(!digitalRead(MP3_DREQ));
@@ -147,18 +143,18 @@ void WriteReg16(unsigned char address, unsigned int databyte) {
   digitalWrite(MP3_CS, HIGH);
 }
 
-const uint8_t wav_header[44] = {
-  0x52,0x49,0x46,0x46,0xFF,0xFF,0xFF,0xFF,0x57,0x41,0x56,0x45,0x66,0x6d,0x74,0x20,
-  0x10,0x00,0x00,0x00,0x01,0x00,0x02,0x00,0x22,0x56,0x00,0x00,0x44,0xac,0x00,0x00,
-  0x02,0x00,0x08,0x00,0x64,0x61,0x74,0x61,0xFF,0xFF,0xFF,0xFF
-};
-
 void load_header() {
   for (int i = 0; i < sizeof(wav_header); i++) {
     uint8_t p = wav_header[i];
     while (!digitalRead(MP3_DREQ)) {}
     digitalWrite(MP3_XDCS, LOW);
     PicoSPI0.transfer(p);
+    digitalWrite(MP3_XDCS, HIGH);
+  }
+  for (int i = 0; i < 512; i++) {
+    while (!digitalRead(MP3_DREQ)) {}
+    digitalWrite(MP3_XDCS, LOW);
+    PicoSPI0.transfer(0x00);
     digitalWrite(MP3_XDCS, HIGH);
   }
 }
@@ -189,6 +185,8 @@ void setup() {
 
 void loop() {
 
+  while (!digitalRead(MP3_DREQ)) {}
+
   float in = 0.0f;
   if (burstActive && burstSamplesRemaining > 0) {
     int16_t r = fastRand16();
@@ -214,14 +212,15 @@ void loop() {
   processReverb(total * 0.35f, &outL, &outR);
   if (outL < -1) outL = -1; if (outL > 1) outL = 1;
   if (outR < -1) outR = -1; if (outR > 1) outR = 1;
-  uint8_t left = (uint8_t)((outL * 0.5f + 0.5f) * 255);
-  uint8_t right = (uint8_t)((outR * 0.5f + 0.5f) * 255);
+  int16_t l = (int16_t)(outL * 32767.0f);
+  int16_t r = (int16_t)(outR * 32767.0f);
 
   digitalWrite(MP3_XDCS, LOW);
-  PicoSPI0.transfer(left);
-  PicoSPI0.transfer(right);
+  PicoSPI0.transfer(l & 0xFF);
+  PicoSPI0.transfer(l >> 8);
+  PicoSPI0.transfer(r & 0xFF);
+  PicoSPI0.transfer(r >> 8);
   digitalWrite(MP3_XDCS, HIGH);
-  while (!digitalRead(MP3_DREQ)) {}
 
 }
 
