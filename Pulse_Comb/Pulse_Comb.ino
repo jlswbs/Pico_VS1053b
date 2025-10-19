@@ -1,5 +1,6 @@
 // Pulse train oscillator with feedback comb filter //
 
+#include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
 
 #define MP3_CLK   2
@@ -11,6 +12,7 @@
 #define MP3_RST   13
 
 #define SAMPLE_RATE 22050
+#define BPM         120
 
 volatile float pulse_freq_hz = 110.0f;
 volatile float comb_freq_hz = 440.0f;
@@ -74,6 +76,29 @@ int16_t dsp_process_frame() {
 
 }
 
+static inline uint32_t read_from_rosc() {
+  uint32_t random = 0;
+  volatile uint32_t *rnd_reg = (uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
+  for (int k = 0; k < 32; k++) {
+    uint32_t bit = 0;
+    while (1) {
+      bit = (*rnd_reg) & 1;
+      if (bit != ((*rnd_reg) & 1)) break;
+    }
+    random = (random << 1) | bit;
+  }
+  return random;
+}
+
+void seed_random_safe() {
+  uint32_t seed = 0;
+  for (int i = 0; i < 8; i++) {
+    seed ^= read_from_rosc();
+    delayMicroseconds(100);
+  }
+  srand(seed);
+  randomSeed(seed);
+}
 
 const uint8_t wav_header[44] = {
   'R','I','F','F', 0x24,0x80,0x00,0x00, 'W','A','V','E',
@@ -111,6 +136,8 @@ void load_header() {
 
 void setup() {
 
+  seed_random_safe();
+
   pinMode(MP3_DREQ, INPUT_PULLDOWN);
   pinMode(MP3_CS, OUTPUT);
   pinMode(MP3_XDCS, OUTPUT);
@@ -124,7 +151,7 @@ void setup() {
   load_header();
 
   WriteReg16(0x03, 0x9800); // 4.0x multiplier
-  WriteReg16(0x0B, 0x4F4F); // volume output internal DAC
+  WriteReg16(0x0B, 0x3F3F); // volume output internal DAC
   PicoSPI0.configure(MP3_CLK, MP3_MOSI, MP3_MISO, MP3_CS, 16000000, 0, true);
   PicoSPI0.transfer(0xFF);
 
@@ -149,6 +176,12 @@ void loop() {
 
 }
 
+void setup1() {
+
+  seed_random_safe();
+
+}
+
 void loop1() {
 
   pulse_freq_hz = random(60, 400);
@@ -156,6 +189,7 @@ void loop1() {
   
   update_dsp_params();
 
-  delay(150);
+  int tempo = 60000 / BPM;
+  delay(tempo / 3);
 
 }
