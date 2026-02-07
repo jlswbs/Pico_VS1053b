@@ -145,19 +145,21 @@ void setup() {
 
 void loop() {
 
-  if (queue_get_level(&sample_fifo) >= 8) {
-    while(!digitalRead(MP3_DREQ));
-    digitalWrite(MP3_XDCS, LOW);
-    for (int i = 0; i < 8; i++) {
-      int16_t out;
-      queue_remove_blocking(&sample_fifo, &out);
-      PicoSPI0.transfer(out & 0xFF);
-      PicoSPI0.transfer(out >> 8);
-      PicoSPI0.transfer(out & 0xFF);
-      PicoSPI0.transfer(out >> 8);
-    }
-    digitalWrite(MP3_XDCS, HIGH);
+  while(!digitalRead(MP3_DREQ));
+  digitalWrite(MP3_XDCS, LOW);
+
+  for (int i = 0; i < 8; i++) {
+
+    int16_t out;
+    queue_remove_blocking(&sample_fifo, &out);
+    PicoSPI0.transfer(out & 0xFF);
+    PicoSPI0.transfer(out >> 8);
+    PicoSPI0.transfer(out & 0xFF);
+    PicoSPI0.transfer(out >> 8);
+
   }
+
+  digitalWrite(MP3_XDCS, HIGH);
 
 }
 
