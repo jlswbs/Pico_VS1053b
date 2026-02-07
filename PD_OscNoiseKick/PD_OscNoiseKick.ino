@@ -1,5 +1,5 @@
-// VS1053b PCM mode stereo 8bit 44100 Hz - PureData oscillator noise kick noodle //
-// 250 Mhz required and HVCC 0.14.0 atomic fix //
+// PureData oscillator noise kick noodle - 44100 16bit dual core //
+// HVCC 0.14.0 atomic fix patch //
 
 #include "hardware/structs/rosc.h"
 #include "PicoSPI.h"
@@ -48,9 +48,12 @@
 #define SM_CLK_RANGE      0x0F
 
 #define SAMPLE_RATE 44100
+#define SAMPLES     64
 #define BPM         90
 
-float samples[2];
+queue_t sample_fifo;
+unsigned long lastTriggerTime = 0;
+float floatSamples[SAMPLES];
 
 class Trand {
 
@@ -127,7 +130,7 @@ unsigned int ReadReg(unsigned char address){
 const uint8_t wav_header[44] = {
   'R','I','F','F', 0x24,0x80,0x00,0x00, 'W','A','V','E',
   'f','m','t',' ', 0x10,0x00,0x00,0x00, 0x01,0x00,0x02,0x00,
-  0x44,0xAC,0x00,0x00, 0x88,0x58,0x01,0x00, 0x02,0x00,0x08,0x00,
+  0x44,0xAC,0x00,0x00, 0x10,0xB1,0x02,0x00, 0x04,0x00,0x10,0x00,
   'd','a','t','a', 0x00,0x80,0x00,0x00
 };
 
@@ -161,37 +164,60 @@ void setup(){
   digitalWrite(MP3_CS, HIGH);
   digitalWrite(MP3_XDCS, HIGH);
 
+  queue_init(&sample_fifo, sizeof(int16_t), 128);
+
   load_header();
 
-  WriteReg16(0x03, 0x9800); // 4.0x multiplier
-  WriteReg16(SCI_VOL, 0x4F4F);       // set volume
+  WriteReg16(0x03, 0x9800);
+  WriteReg16(SCI_VOL, 0x4F4F);
 
   PicoSPI0.configure (MP3_CLK, MP3_MOSI, MP3_MISO, MP3_CS, 16000000, 0, true);
   PicoSPI0.transfer(0xFF);
 
 }
 
-void loop(){
+void loop() {
 
-  pd_prog.processInlineInterleaved(NULL, samples, 1);
-
-  while (!digitalRead(MP3_DREQ)) {}
-    
-  int8_t l = 128 + (127.0f * samples[0]);
-  int8_t r = 128 + (127.0f * samples[1]);
-
+  while(!digitalRead(MP3_DREQ));
   digitalWrite(MP3_XDCS, LOW);
-  PicoSPI0.transfer(l);
-  PicoSPI0.transfer(r);
+    
+  for (int i = 0; i < 8; i++) {
+
+    int16_t l, r;
+    queue_remove_blocking(&sample_fifo, &l);
+    queue_remove_blocking(&sample_fifo, &r);
+      
+    PicoSPI0.transfer(l & 0xFF);
+    PicoSPI0.transfer(l >> 8);
+    PicoSPI0.transfer(r & 0xFF);
+    PicoSPI0.transfer(r >> 8);
+
+  }
+    
   digitalWrite(MP3_XDCS, HIGH);
 
 }
 
 void loop1(){
+  
+  pd_prog.processInlineInterleaved(NULL, floatSamples, SAMPLES/2);
 
-  pd_prog.sendBangToReceiver(0x26682824);
+  for (int i = 0; i < SAMPLES; i += 2) {
 
-  int tempo = 60000 / BPM;
-  delay(tempo / 3);
+    int16_t left = (int16_t)(floatSamples[i] * 32767.0f);
+    int16_t right = (int16_t)(floatSamples[i+1] * 32767.0f);
+    
+    queue_add_blocking(&sample_fifo, &left);
+    queue_add_blocking(&sample_fifo, &right);
+
+  }
+
+  unsigned long currentTime = millis();
+  int tempoMs = 60000 / BPM / 3;
+
+  if (currentTime - lastTriggerTime >= tempoMs) {
+    lastTriggerTime = currentTime;
+    pd_prog.sendBangToReceiver(0x26682824);
+  }
 
 }

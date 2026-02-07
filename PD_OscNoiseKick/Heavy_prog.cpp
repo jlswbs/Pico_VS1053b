@@ -83,46 +83,46 @@ extern "C" {
 
 Heavy_prog::Heavy_prog(double sampleRate, int poolKb, int inQueueKb, int outQueueKb)
     : HeavyContext(sampleRate, poolKb, inQueueKb, outQueueKb) {
-  numBytes += sRPole_init(&sRPole_fVALYJ5g);
-  numBytes += sDel1_init(&sDel1_MDBTTKDU);
-  numBytes += sLine_init(&sLine_wMLytt6S);
-  numBytes += sPhasor_k_init(&sPhasor_ndfG8Sy2, 0.0f, sampleRate);
-  numBytes += sDel1_init(&sDel1_5RE5oKdi);
-  numBytes += sSamphold_init(&sSamphold_v7TLWLo9);
-  numBytes += sPhasor_init(&sPhasor_MVSIYAQ2, sampleRate);
-  numBytes += sPhasor_init(&sPhasor_ILH3Kzax, sampleRate);
-  numBytes += sLine_init(&sLine_NJ9KOKSm);
-  numBytes += sRPole_init(&sRPole_V92cpwNw);
-  numBytes += cVar_init_f(&cVar_Fyf3KaMx, 0.0f);
-  numBytes += cVar_init_f(&cVar_WP9CysuC, 0.0f);
-  numBytes += cVar_init_f(&cVar_8ekAWnCB, 0.0f);
-  numBytes += cBinop_init(&cBinop_uQUvdkK7, 29.0f); // __div
-  numBytes += sVarf_init(&sVarf_HRuactSx, 0.0f, 0.0f, false);
-  numBytes += cRandom_init(&cRandom_kcrAUz4k, 1470437499);
-  numBytes += cSlice_init(&cSlice_zDnPJmOD, 1, 1);
-  numBytes += cVar_init_f(&cVar_OEzkZyz7, 22050.0f);
-  numBytes += cBinop_init(&cBinop_Z6DZ4m6N, 0.0f); // __mul
-  numBytes += sVarf_init(&sVarf_kxIdumy8, 0.0f, 0.0f, false);
-  numBytes += sVarf_init(&sVarf_vZ3freh8, 0.0f, 0.0f, false);
-  numBytes += cVar_init_f(&cVar_L4gHzjFo, 0.0f);
-  numBytes += cVar_init_f(&cVar_9WVqBWGL, 0.0f);
-  numBytes += cRandom_init(&cRandom_2Zpi6uD8, 46926707);
-  numBytes += cSlice_init(&cSlice_aKh6QNu7, 1, 1);
-  numBytes += sVarf_init(&sVarf_LfbkmlPF, 0.0f, 0.0f, false);
-  numBytes += cVar_init_f(&cVar_nVhFXPsO, 8000.0f);
-  numBytes += cBinop_init(&cBinop_QDww6r23, 0.0f); // __div
-  numBytes += sVarf_init(&sVarf_zWT1IZPq, 0.0f, 0.0f, false);
-  numBytes += cRandom_init(&cRandom_kEUpe3Ez, -1339467175);
-  numBytes += cSlice_init(&cSlice_tiBg7swR, 1, 1);
-  numBytes += sVari_init(&sVari_O1SIByJc, 0, 0, false);
-  numBytes += cRandom_init(&cRandom_0rW6epQm, -534989812);
-  numBytes += cSlice_init(&cSlice_HppREbMU, 1, 1);
-  numBytes += cRandom_init(&cRandom_PWdriHN8, 1238109043);
-  numBytes += cSlice_init(&cSlice_FqmV7XIQ, 1, 1);
-  numBytes += cBinop_init(&cBinop_I5qhDPya, 0.0f); // __mul
-  numBytes += sVarf_init(&sVarf_yubGt1V0, 0.0f, 0.0f, false);
-  numBytes += sVarf_init(&sVarf_c7luVdha, 0.0f, 0.0f, false);
-  numBytes += sVarf_init(&sVarf_x3JNJEoy, 0.0f, 0.0f, false);
+  numBytes += sRPole_init(&sRPole_CMFkc4Vk);
+  numBytes += sDel1_init(&sDel1_0da2dfdo);
+  numBytes += sLine_init(&sLine_GPM84qEL);
+  numBytes += sPhasor_k_init(&sPhasor_sTQ2VfGS, 0.0f, sampleRate);
+  numBytes += sDel1_init(&sDel1_QkoARA9l);
+  numBytes += sSamphold_init(&sSamphold_Ury8CONE);
+  numBytes += sPhasor_init(&sPhasor_DdNASZ6T, sampleRate);
+  numBytes += sPhasor_init(&sPhasor_cEi439Ko, sampleRate);
+  numBytes += sLine_init(&sLine_5h0nUEpP);
+  numBytes += sRPole_init(&sRPole_2Q5c8Ysv);
+  numBytes += cVar_init_f(&cVar_xw1mGq2l, 0.0f);
+  numBytes += cVar_init_f(&cVar_LSJoNrY2, 0.0f);
+  numBytes += cVar_init_f(&cVar_2ATKqOLa, 0.0f);
+  numBytes += cBinop_init(&cBinop_xe9aWXXl, 29.0f); // __div
+  numBytes += sVarf_init(&sVarf_dSFA78l2, 0.0f, 0.0f, false);
+  numBytes += cRandom_init(&cRandom_hi2zdDbr, -73434684);
+  numBytes += cSlice_init(&cSlice_OLPPfgnd, 1, 1);
+  numBytes += cVar_init_f(&cVar_e7vqtAD6, 22050.0f);
+  numBytes += cBinop_init(&cBinop_FbqwKN8C, 0.0f); // __mul
+  numBytes += sVarf_init(&sVarf_b94bFdan, 0.0f, 0.0f, false);
+  numBytes += sVarf_init(&sVarf_nK4OwyfG, 0.0f, 0.0f, false);
+  numBytes += cVar_init_f(&cVar_dcB2rE3s, 0.0f);
+  numBytes += cVar_init_f(&cVar_UVoHqOh4, 0.0f);
+  numBytes += cRandom_init(&cRandom_uSIJJ4Yd, 2003194336);
+  numBytes += cSlice_init(&cSlice_ilBkzoyV, 1, 1);
+  numBytes += sVarf_init(&sVarf_v5Vyztih, 0.0f, 0.0f, false);
+  numBytes += cVar_init_f(&cVar_kvrptBmn, 8000.0f);
+  numBytes += cBinop_init(&cBinop_t64UPgqL, 0.0f); // __div
+  numBytes += sVarf_init(&sVarf_ezmUOCtN, 0.0f, 0.0f, false);
+  numBytes += cRandom_init(&cRandom_9lZV8lIN, 1661261459);
+  numBytes += cSlice_init(&cSlice_gVdtbAVp, 1, 1);
+  numBytes += sVari_init(&sVari_DZ63AjSt, 0, 0, false);
+  numBytes += cRandom_init(&cRandom_Wz5qNoW8, -397976201);
+  numBytes += cSlice_init(&cSlice_9BeB9bjR, 1, 1);
+  numBytes += cRandom_init(&cRandom_0vxC7Z34, -1983757035);
+  numBytes += cSlice_init(&cSlice_amEEHe9H, 1, 1);
+  numBytes += cBinop_init(&cBinop_gabMzmGo, 0.0f); // __mul
+  numBytes += sVarf_init(&sVarf_95VmBnGZ, 0.0f, 0.0f, false);
+  numBytes += sVarf_init(&sVarf_nhejub5A, 0.0f, 0.0f, false);
+  numBytes += sVarf_init(&sVarf_gMMntJe4, 0.0f, 0.0f, false);
   
   // schedule a message to trigger all loadbangs via the __hv_init receiver
   scheduleMessageForReceiver(0xCE5CC65B, msg_initWithBang(HV_MESSAGE_ON_STACK(1), 0));
@@ -139,11 +139,11 @@ HvTable *Heavy_prog::getTableForHash(hv_uint32_t tableHash) {
 void Heavy_prog::scheduleMessageForReceiver(hv_uint32_t receiverHash, HvMessage *m) {
   switch (receiverHash) {
     case 0xCE5CC65B: { // __hv_init
-      mq_addMessageByTimestamp(&mq, m, 0, &cReceive_dY6z9ZgY_sendMessage);
+      mq_addMessageByTimestamp(&mq, m, 0, &cReceive_1ec7vajz_sendMessage);
       break;
     }
     case 0x26682824: { // tempo
-      mq_addMessageByTimestamp(&mq, m, 0, &cReceive_ZOfw8fDb_sendMessage);
+      mq_addMessageByTimestamp(&mq, m, 0, &cReceive_kJ2Ejwe6_sendMessage);
       break;
     }
     default: return;
@@ -183,24 +183,24 @@ int Heavy_prog::getParameterInfo(int index, HvParameterInfo *info) {
  */
 
 
-void Heavy_prog::cVar_Fyf3KaMx_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cSwitchcase_87W5gmI1_onMessage(_c, NULL, 0, m, NULL);
+void Heavy_prog::cVar_xw1mGq2l_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cSwitchcase_TLAVfKbd_onMessage(_c, NULL, 0, m, NULL);
 }
 
-void Heavy_prog::cVar_WP9CysuC_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 30.0f, 0, m, &cBinop_jY4kWi8M_sendMessage);
-  cBinop_onMessage(_c, &Context(_c)->cBinop_I5qhDPya, HV_BINOP_MULTIPLY, 1, m, &cBinop_I5qhDPya_sendMessage);
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 16.0f, 0, m, &cBinop_5vMJSCzr_sendMessage);
+void Heavy_prog::cVar_LSJoNrY2_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 30.0f, 0, m, &cBinop_PYRsC6b4_sendMessage);
+  cBinop_onMessage(_c, &Context(_c)->cBinop_gabMzmGo, HV_BINOP_MULTIPLY, 1, m, &cBinop_gabMzmGo_sendMessage);
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 16.0f, 0, m, &cBinop_reXt6V8x_sendMessage);
 }
 
-void Heavy_prog::cVar_8ekAWnCB_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  sPhasor_k_onMessage(_c, &Context(_c)->sPhasor_ndfG8Sy2, 0, m);
-  cBinop_onMessage(_c, &Context(_c)->cBinop_I5qhDPya, HV_BINOP_MULTIPLY, 0, m, &cBinop_I5qhDPya_sendMessage);
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_DIVIDE, 16.0f, 0, m, &cBinop_eTp9IeV0_sendMessage);
-  sVarf_onMessage(_c, &Context(_c)->sVarf_c7luVdha, m);
+void Heavy_prog::cVar_2ATKqOLa_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  sPhasor_k_onMessage(_c, &Context(_c)->sPhasor_sTQ2VfGS, 0, m);
+  cBinop_onMessage(_c, &Context(_c)->cBinop_gabMzmGo, HV_BINOP_MULTIPLY, 0, m, &cBinop_gabMzmGo_sendMessage);
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_DIVIDE, 16.0f, 0, m, &cBinop_IEdVCssP_sendMessage);
+  sVarf_onMessage(_c, &Context(_c)->sVarf_nhejub5A, m);
 }
 
-void Heavy_prog::cSwitchcase_87W5gmI1_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
+void Heavy_prog::cSwitchcase_TLAVfKbd_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
   int msgIndex = 0;
   switch (msg_getHash(m, msgIndex)) {
     case 0x6D60E6E: { // "symbol"
@@ -210,15 +210,15 @@ void Heavy_prog::cSwitchcase_87W5gmI1_onMessage(HeavyContextInterface *_c, void 
   }
   switch (msg_getHash(m, msgIndex)) {
     case 0x0: { // "0.0"
-      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_cSQXXcQI_sendMessage);
+      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_Crms06qr_sendMessage);
       break;
     }
     case 0x3F800000: { // "1.0"
-      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_4RixOwED_sendMessage);
+      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_Ru9D5eTR_sendMessage);
       break;
     }
     case 0x40000000: { // "2.0"
-      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_83awyfce_sendMessage);
+      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_a7sSzp4M_sendMessage);
       break;
     }
     default: {
@@ -227,117 +227,117 @@ void Heavy_prog::cSwitchcase_87W5gmI1_onMessage(HeavyContextInterface *_c, void 
   }
 }
 
-void Heavy_prog::cCast_cSQXXcQI_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_0xTbxmHk_sendMessage);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_wtQFAqeo_sendMessage);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_WhzKULQ4_sendMessage);
+void Heavy_prog::cCast_Crms06qr_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_R4MospIj_sendMessage);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_xpor2Hpo_sendMessage);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_KVyU1YsZ_sendMessage);
 }
 
-void Heavy_prog::cCast_4RixOwED_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_pKr3EurY_sendMessage);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_30qA1eFC_sendMessage);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_9N0h6jUR_sendMessage);
+void Heavy_prog::cCast_Ru9D5eTR_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_PvAM3HGn_sendMessage);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_GaVAqUoP_sendMessage);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_Ps7uBUGa_sendMessage);
 }
 
-void Heavy_prog::cCast_83awyfce_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_ZdrLqIt1_sendMessage);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_cuJ6PLt2_sendMessage);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_g7sgOXVl_sendMessage);
+void Heavy_prog::cCast_a7sSzp4M_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_QgccUOx0_sendMessage);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_lAEbZ5ez_sendMessage);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_MgSj2xnn_sendMessage);
 }
 
-void Heavy_prog::cCast_hc5YNCkc_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_onMessage(_c, &Context(_c)->cBinop_uQUvdkK7, HV_BINOP_DIVIDE, 0, m, &cBinop_uQUvdkK7_sendMessage);
+void Heavy_prog::cCast_S28wJP3s_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_onMessage(_c, &Context(_c)->cBinop_xe9aWXXl, HV_BINOP_DIVIDE, 0, m, &cBinop_xe9aWXXl_sendMessage);
 }
 
-void Heavy_prog::cCast_S2LMpnIi_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_tGLvh64M_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_760JfNgQ_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_OGDiyBAQ_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cCast_cuJ6PLt2_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_EotkF4JC_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_lAEbZ5ez_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_guseHSP8_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cCast_ZdrLqIt1_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cCast_MgSj2xnn_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_EM2m4BuH_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cCast_g7sgOXVl_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_hIwbLsfr_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_QgccUOx0_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
 }
 
-void Heavy_prog::cCast_9N0h6jUR_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_hIwbLsfr_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_GaVAqUoP_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_0ap8GQGG_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cCast_pKr3EurY_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cCast_PvAM3HGn_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
 }
 
-void Heavy_prog::cCast_30qA1eFC_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_eOM6YRZC_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_Ps7uBUGa_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_EM2m4BuH_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cCast_0xTbxmHk_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cCast_xpor2Hpo_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_5EAXG1nA_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cCast_WhzKULQ4_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_hIwbLsfr_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_R4MospIj_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
 }
 
-void Heavy_prog::cCast_wtQFAqeo_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_EwXplAcX_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_KVyU1YsZ_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_EM2m4BuH_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cMsg_tGLvh64M_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_OGDiyBAQ_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(2);
   msg_init(m, 2, msg_getTimestamp(n));
   msg_setFloat(m, 0, 1.0f);
   msg_setFloat(m, 1, 0.0f);
-  sLine_onMessage(_c, &Context(_c)->sLine_NJ9KOKSm, 0, m, NULL);
+  sLine_onMessage(_c, &Context(_c)->sLine_5h0nUEpP, 0, m, NULL);
   m = HV_MESSAGE_ON_STACK(2);
   msg_init(m, 2, msg_getTimestamp(n));
   msg_setFloat(m, 0, 0.0f);
   msg_setElementToFrom(m, 1, n, 0);
-  sLine_onMessage(_c, &Context(_c)->sLine_NJ9KOKSm, 0, m, NULL);
+  sLine_onMessage(_c, &Context(_c)->sLine_5h0nUEpP, 0, m, NULL);
 }
 
-void Heavy_prog::cBinop_uQUvdkK7_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  sVarf_onMessage(_c, &Context(_c)->sVarf_HRuactSx, m);
+void Heavy_prog::cBinop_xe9aWXXl_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  sVarf_onMessage(_c, &Context(_c)->sVarf_dSFA78l2, m);
 }
 
-void Heavy_prog::cMsg_hIwbLsfr_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_EM2m4BuH_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(1);
   msg_init(m, 1, msg_getTimestamp(n));
   msg_setFloat(m, 0, 110.0f);
-  cCast_onMessage(_c, HV_CAST_FLOAT, 0, m, &cCast_S2LMpnIi_sendMessage);
-  cCast_onMessage(_c, HV_CAST_FLOAT, 0, m, &cCast_hc5YNCkc_sendMessage);
+  cCast_onMessage(_c, HV_CAST_FLOAT, 0, m, &cCast_760JfNgQ_sendMessage);
+  cCast_onMessage(_c, HV_CAST_FLOAT, 0, m, &cCast_S28wJP3s_sendMessage);
 }
 
-void Heavy_prog::cMsg_EwXplAcX_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_5EAXG1nA_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(1);
   msg_init(m, 1, msg_getTimestamp(n));
   msg_setFloat(m, 0, 5.5f);
-  cBinop_onMessage(_c, &Context(_c)->cBinop_uQUvdkK7, HV_BINOP_DIVIDE, 1, m, &cBinop_uQUvdkK7_sendMessage);
+  cBinop_onMessage(_c, &Context(_c)->cBinop_xe9aWXXl, HV_BINOP_DIVIDE, 1, m, &cBinop_xe9aWXXl_sendMessage);
 }
 
-void Heavy_prog::cMsg_eOM6YRZC_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_0ap8GQGG_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(1);
   msg_init(m, 1, msg_getTimestamp(n));
   msg_setFloat(m, 0, 25.0f);
-  cBinop_onMessage(_c, &Context(_c)->cBinop_uQUvdkK7, HV_BINOP_DIVIDE, 1, m, &cBinop_uQUvdkK7_sendMessage);
+  cBinop_onMessage(_c, &Context(_c)->cBinop_xe9aWXXl, HV_BINOP_DIVIDE, 1, m, &cBinop_xe9aWXXl_sendMessage);
 }
 
-void Heavy_prog::cMsg_EotkF4JC_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_guseHSP8_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(1);
   msg_init(m, 1, msg_getTimestamp(n));
   msg_setFloat(m, 0, 12.0f);
-  cBinop_onMessage(_c, &Context(_c)->cBinop_uQUvdkK7, HV_BINOP_DIVIDE, 1, m, &cBinop_uQUvdkK7_sendMessage);
+  cBinop_onMessage(_c, &Context(_c)->cBinop_xe9aWXXl, HV_BINOP_DIVIDE, 1, m, &cBinop_xe9aWXXl_sendMessage);
 }
 
-void Heavy_prog::cSwitchcase_FH1SIaHg_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
+void Heavy_prog::cSwitchcase_IIxr5hW1_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
   int msgIndex = 0;
   switch (msg_getHash(m, msgIndex)) {
     case 0x6D60E6E: { // "symbol"
@@ -347,32 +347,32 @@ void Heavy_prog::cSwitchcase_FH1SIaHg_onMessage(HeavyContextInterface *_c, void 
   }
   switch (msg_getHash(m, msgIndex)) {
     case 0x7E64BD01: { // "seed"
-      cSlice_onMessage(_c, &Context(_c)->cSlice_zDnPJmOD, 0, m, &cSlice_zDnPJmOD_sendMessage);
+      cSlice_onMessage(_c, &Context(_c)->cSlice_OLPPfgnd, 0, m, &cSlice_OLPPfgnd_sendMessage);
       break;
     }
     default: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_kcrAUz4k, 0, m, &cRandom_kcrAUz4k_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_hi2zdDbr, 0, m, &cRandom_hi2zdDbr_sendMessage);
       break;
     }
   }
 }
 
-void Heavy_prog::cBinop_phSsGhPg_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_DHVZY6LU_sendMessage);
+void Heavy_prog::cBinop_aHi7jDCU_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_Lp4tQ6Fe_sendMessage);
 }
 
-void Heavy_prog::cUnop_DHVZY6LU_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cVar_onMessage(_c, &Context(_c)->cVar_8ekAWnCB, 0, m, &cVar_8ekAWnCB_sendMessage);
+void Heavy_prog::cUnop_Lp4tQ6Fe_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cVar_onMessage(_c, &Context(_c)->cVar_2ATKqOLa, 0, m, &cVar_2ATKqOLa_sendMessage);
 }
 
-void Heavy_prog::cRandom_kcrAUz4k_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 8.0f, 0, m, &cBinop_phSsGhPg_sendMessage);
+void Heavy_prog::cRandom_hi2zdDbr_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 8.0f, 0, m, &cBinop_aHi7jDCU_sendMessage);
 }
 
-void Heavy_prog::cSlice_zDnPJmOD_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cSlice_OLPPfgnd_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
   switch (letIn) {
     case 0: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_kcrAUz4k, 1, m, &cRandom_kcrAUz4k_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_hi2zdDbr, 1, m, &cRandom_hi2zdDbr_sendMessage);
       break;
     }
     case 1: {
@@ -382,57 +382,57 @@ void Heavy_prog::cSlice_zDnPJmOD_sendMessage(HeavyContextInterface *_c, int letI
   }
 }
 
-void Heavy_prog::cVar_OEzkZyz7_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_onMessage(_c, &Context(_c)->cBinop_Z6DZ4m6N, HV_BINOP_MULTIPLY, 0, m, &cBinop_Z6DZ4m6N_sendMessage);
+void Heavy_prog::cVar_e7vqtAD6_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_onMessage(_c, &Context(_c)->cBinop_FbqwKN8C, HV_BINOP_MULTIPLY, 0, m, &cBinop_FbqwKN8C_sendMessage);
 }
 
-void Heavy_prog::cMsg_oYttykXC_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_Fm6xgjAz_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(1);
   msg_init(m, 1, msg_getTimestamp(n));
   msg_setSymbol(m, 0, "samplerate");
-  cSystem_onMessage(_c, NULL, 0, m, &cSystem_voXfLKuS_sendMessage);
+  cSystem_onMessage(_c, NULL, 0, m, &cSystem_fjkJqE1s_sendMessage);
 }
 
-void Heavy_prog::cSystem_voXfLKuS_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_PwVnI789_sendMessage(_c, 0, m);
+void Heavy_prog::cSystem_fjkJqE1s_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_BxWHJHBx_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cBinop_Z6DZ4m6N_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MIN, 1.0f, 0, m, &cBinop_2S13Q4Ra_sendMessage);
+void Heavy_prog::cBinop_FbqwKN8C_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MIN, 1.0f, 0, m, &cBinop_1Lp8TTYH_sendMessage);
 }
 
-void Heavy_prog::cBinop_wNiKfITA_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_onMessage(_c, &Context(_c)->cBinop_Z6DZ4m6N, HV_BINOP_MULTIPLY, 1, m, &cBinop_Z6DZ4m6N_sendMessage);
+void Heavy_prog::cBinop_zWHfnYoh_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_onMessage(_c, &Context(_c)->cBinop_FbqwKN8C, HV_BINOP_MULTIPLY, 1, m, &cBinop_FbqwKN8C_sendMessage);
 }
 
-void Heavy_prog::cMsg_PwVnI789_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_BxWHJHBx_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(2);
   msg_init(m, 2, msg_getTimestamp(n));
   msg_setFloat(m, 0, 6.28319f);
   msg_setElementToFrom(m, 1, n, 0);
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_DIVIDE, 0.0f, 0, m, &cBinop_wNiKfITA_sendMessage);
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_DIVIDE, 0.0f, 0, m, &cBinop_zWHfnYoh_sendMessage);
 }
 
-void Heavy_prog::cBinop_2S13Q4Ra_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MAX, 0.0f, 0, m, &cBinop_4J9gsaN9_sendMessage);
+void Heavy_prog::cBinop_1Lp8TTYH_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MAX, 0.0f, 0, m, &cBinop_q3yTJPk0_sendMessage);
 }
 
-void Heavy_prog::cBinop_4J9gsaN9_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_SUBTRACT, 1.0f, 0, m, &cBinop_VSORPMYj_sendMessage);
-  sVarf_onMessage(_c, &Context(_c)->sVarf_vZ3freh8, m);
+void Heavy_prog::cBinop_q3yTJPk0_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_SUBTRACT, 1.0f, 0, m, &cBinop_FkVf21JR_sendMessage);
+  sVarf_onMessage(_c, &Context(_c)->sVarf_nK4OwyfG, m);
 }
 
-void Heavy_prog::cBinop_VSORPMYj_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  sVarf_onMessage(_c, &Context(_c)->sVarf_kxIdumy8, m);
+void Heavy_prog::cBinop_FkVf21JR_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  sVarf_onMessage(_c, &Context(_c)->sVarf_b94bFdan, m);
 }
 
-void Heavy_prog::cVar_L4gHzjFo_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cVar_onMessage(_c, &Context(_c)->cVar_OEzkZyz7, 0, m, &cVar_OEzkZyz7_sendMessage);
+void Heavy_prog::cVar_dcB2rE3s_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cVar_onMessage(_c, &Context(_c)->cVar_e7vqtAD6, 0, m, &cVar_e7vqtAD6_sendMessage);
 }
 
-void Heavy_prog::cSwitchcase_6aTj8MRG_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
+void Heavy_prog::cSwitchcase_VqlizZyx_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
   int msgIndex = 0;
   switch (msg_getHash(m, msgIndex)) {
     case 0x6D60E6E: { // "symbol"
@@ -442,27 +442,27 @@ void Heavy_prog::cSwitchcase_6aTj8MRG_onMessage(HeavyContextInterface *_c, void 
   }
   switch (msg_getHash(m, msgIndex)) {
     case 0x3F800000: { // "1.0"
-      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_qM7TcyVa_sendMessage);
+      cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_G9zXpNo9_sendMessage);
       break;
     }
     default: {
-      cMsg_MKXyn3Lf_sendMessage(_c, 0, m);
+      cMsg_LyuUczKA_sendMessage(_c, 0, m);
       break;
     }
   }
 }
 
-void Heavy_prog::cCast_qM7TcyVa_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_uhBSJ6jO_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_G9zXpNo9_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_9ComHiEW_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cVar_9WVqBWGL_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cVar_onMessage(_c, &Context(_c)->cVar_OEzkZyz7, 0, m, &cVar_OEzkZyz7_sendMessage);
-  sPhasor_k_onMessage(_c, &Context(_c)->sPhasor_ndfG8Sy2, 1, m);
-  cVar_onMessage(_c, &Context(_c)->cVar_nVhFXPsO, 0, m, &cVar_nVhFXPsO_sendMessage);
+void Heavy_prog::cVar_UVoHqOh4_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cVar_onMessage(_c, &Context(_c)->cVar_e7vqtAD6, 0, m, &cVar_e7vqtAD6_sendMessage);
+  sPhasor_k_onMessage(_c, &Context(_c)->sPhasor_sTQ2VfGS, 1, m);
+  cVar_onMessage(_c, &Context(_c)->cVar_kvrptBmn, 0, m, &cVar_kvrptBmn_sendMessage);
 }
 
-void Heavy_prog::cSwitchcase_08JU16lW_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
+void Heavy_prog::cSwitchcase_padfYcwh_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
   int msgIndex = 0;
   switch (msg_getHash(m, msgIndex)) {
     case 0x6D60E6E: { // "symbol"
@@ -472,32 +472,32 @@ void Heavy_prog::cSwitchcase_08JU16lW_onMessage(HeavyContextInterface *_c, void 
   }
   switch (msg_getHash(m, msgIndex)) {
     case 0x7E64BD01: { // "seed"
-      cSlice_onMessage(_c, &Context(_c)->cSlice_aKh6QNu7, 0, m, &cSlice_aKh6QNu7_sendMessage);
+      cSlice_onMessage(_c, &Context(_c)->cSlice_ilBkzoyV, 0, m, &cSlice_ilBkzoyV_sendMessage);
       break;
     }
     default: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_2Zpi6uD8, 0, m, &cRandom_2Zpi6uD8_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_uSIJJ4Yd, 0, m, &cRandom_uSIJJ4Yd_sendMessage);
       break;
     }
   }
 }
 
-void Heavy_prog::cBinop_DB2L4Kpb_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_Ton1iR5i_sendMessage);
+void Heavy_prog::cBinop_NwUGNv0N_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_3VHp7H64_sendMessage);
 }
 
-void Heavy_prog::cUnop_Ton1iR5i_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cVar_onMessage(_c, &Context(_c)->cVar_Fyf3KaMx, 0, m, &cVar_Fyf3KaMx_sendMessage);
+void Heavy_prog::cUnop_3VHp7H64_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cVar_onMessage(_c, &Context(_c)->cVar_xw1mGq2l, 0, m, &cVar_xw1mGq2l_sendMessage);
 }
 
-void Heavy_prog::cRandom_2Zpi6uD8_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 4.0f, 0, m, &cBinop_DB2L4Kpb_sendMessage);
+void Heavy_prog::cRandom_uSIJJ4Yd_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 4.0f, 0, m, &cBinop_NwUGNv0N_sendMessage);
 }
 
-void Heavy_prog::cSlice_aKh6QNu7_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cSlice_ilBkzoyV_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
   switch (letIn) {
     case 0: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_2Zpi6uD8, 1, m, &cRandom_2Zpi6uD8_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_uSIJJ4Yd, 1, m, &cRandom_uSIJJ4Yd_sendMessage);
       break;
     }
     case 1: {
@@ -507,69 +507,69 @@ void Heavy_prog::cSlice_aKh6QNu7_sendMessage(HeavyContextInterface *_c, int letI
   }
 }
 
-void Heavy_prog::cBinop_hOIVa3qd_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MAX, 0.0f, 0, m, &cBinop_4NnMiXWZ_sendMessage);
+void Heavy_prog::cBinop_LFZMrhp8_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MAX, 0.0f, 0, m, &cBinop_6phazKgA_sendMessage);
 }
 
-void Heavy_prog::cBinop_4NnMiXWZ_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_ADD, 1.0f, 0, m, &cBinop_wncP78dr_sendMessage);
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, -1.0f, 0, m, &cBinop_1ZvktRSX_sendMessage);
+void Heavy_prog::cBinop_6phazKgA_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_ADD, 1.0f, 0, m, &cBinop_EHCsZvVf_sendMessage);
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, -1.0f, 0, m, &cBinop_fUNcRz2O_sendMessage);
 }
 
-void Heavy_prog::cVar_nVhFXPsO_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MAX, 1.0f, 0, m, &cBinop_MVtdXCS4_sendMessage);
+void Heavy_prog::cVar_kvrptBmn_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MAX, 1.0f, 0, m, &cBinop_wnYgtkBL_sendMessage);
 }
 
-void Heavy_prog::cMsg_SCrIvVnv_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_UxParpD8_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(1);
   msg_init(m, 1, msg_getTimestamp(n));
   msg_setSymbol(m, 0, "samplerate");
-  cSystem_onMessage(_c, NULL, 0, m, &cSystem_vjqHYM8w_sendMessage);
+  cSystem_onMessage(_c, NULL, 0, m, &cSystem_rrg7hCWJ_sendMessage);
 }
 
-void Heavy_prog::cSystem_vjqHYM8w_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_onMessage(_c, &Context(_c)->cBinop_QDww6r23, HV_BINOP_DIVIDE, 1, m, &cBinop_QDww6r23_sendMessage);
+void Heavy_prog::cSystem_rrg7hCWJ_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_onMessage(_c, &Context(_c)->cBinop_t64UPgqL, HV_BINOP_DIVIDE, 1, m, &cBinop_t64UPgqL_sendMessage);
 }
 
-void Heavy_prog::cBinop_wncP78dr_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 0.5f, 0, m, &cBinop_OwjoBzFd_sendMessage);
+void Heavy_prog::cBinop_EHCsZvVf_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 0.5f, 0, m, &cBinop_VSVhLpgM_sendMessage);
 }
 
-void Heavy_prog::cBinop_OwjoBzFd_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  sVarf_onMessage(_c, &Context(_c)->sVarf_zWT1IZPq, m);
+void Heavy_prog::cBinop_VSVhLpgM_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  sVarf_onMessage(_c, &Context(_c)->sVarf_ezmUOCtN, m);
 }
 
-void Heavy_prog::cMsg_xqOh6oa8_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_7iTd2FU6_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(2);
   msg_init(m, 2, msg_getTimestamp(n));
   msg_setFloat(m, 0, 1.0f);
   msg_setElementToFrom(m, 1, n, 0);
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_SUBTRACT, 0.0f, 0, m, &cBinop_6zvg6rqB_sendMessage);
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_SUBTRACT, 0.0f, 0, m, &cBinop_dtUim4st_sendMessage);
 }
 
-void Heavy_prog::cBinop_6zvg6rqB_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MIN, 1.0f, 0, m, &cBinop_hOIVa3qd_sendMessage);
+void Heavy_prog::cBinop_dtUim4st_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MIN, 1.0f, 0, m, &cBinop_LFZMrhp8_sendMessage);
 }
 
-void Heavy_prog::cBinop_1ZvktRSX_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  sVarf_onMessage(_c, &Context(_c)->sVarf_LfbkmlPF, m);
+void Heavy_prog::cBinop_fUNcRz2O_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  sVarf_onMessage(_c, &Context(_c)->sVarf_v5Vyztih, m);
 }
 
-void Heavy_prog::cBinop_MVtdXCS4_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 6.28319f, 0, m, &cBinop_Now2skPI_sendMessage);
+void Heavy_prog::cBinop_wnYgtkBL_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 6.28319f, 0, m, &cBinop_b2RBHPAn_sendMessage);
 }
 
-void Heavy_prog::cBinop_Now2skPI_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_onMessage(_c, &Context(_c)->cBinop_QDww6r23, HV_BINOP_DIVIDE, 0, m, &cBinop_QDww6r23_sendMessage);
+void Heavy_prog::cBinop_b2RBHPAn_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_onMessage(_c, &Context(_c)->cBinop_t64UPgqL, HV_BINOP_DIVIDE, 0, m, &cBinop_t64UPgqL_sendMessage);
 }
 
-void Heavy_prog::cBinop_QDww6r23_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_xqOh6oa8_sendMessage(_c, 0, m);
+void Heavy_prog::cBinop_t64UPgqL_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_7iTd2FU6_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cSwitchcase_HbTKcl9j_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
+void Heavy_prog::cSwitchcase_N45YWsX1_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
   int msgIndex = 0;
   switch (msg_getHash(m, msgIndex)) {
     case 0x6D60E6E: { // "symbol"
@@ -579,32 +579,32 @@ void Heavy_prog::cSwitchcase_HbTKcl9j_onMessage(HeavyContextInterface *_c, void 
   }
   switch (msg_getHash(m, msgIndex)) {
     case 0x7E64BD01: { // "seed"
-      cSlice_onMessage(_c, &Context(_c)->cSlice_tiBg7swR, 0, m, &cSlice_tiBg7swR_sendMessage);
+      cSlice_onMessage(_c, &Context(_c)->cSlice_gVdtbAVp, 0, m, &cSlice_gVdtbAVp_sendMessage);
       break;
     }
     default: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_kEUpe3Ez, 0, m, &cRandom_kEUpe3Ez_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_9lZV8lIN, 0, m, &cRandom_9lZV8lIN_sendMessage);
       break;
     }
   }
 }
 
-void Heavy_prog::cBinop_TfgUgUOs_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_gTktGCvm_sendMessage);
+void Heavy_prog::cBinop_7RgykuMb_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_6B2xnzHW_sendMessage);
 }
 
-void Heavy_prog::cUnop_gTktGCvm_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_xyEyMaNk_sendMessage(_c, 0, m);
+void Heavy_prog::cUnop_6B2xnzHW_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_pcYO1Zoj_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cRandom_kEUpe3Ez_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 8388610.0f, 0, m, &cBinop_TfgUgUOs_sendMessage);
+void Heavy_prog::cRandom_9lZV8lIN_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 8388610.0f, 0, m, &cBinop_7RgykuMb_sendMessage);
 }
 
-void Heavy_prog::cSlice_tiBg7swR_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cSlice_gVdtbAVp_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
   switch (letIn) {
     case 0: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_kEUpe3Ez, 1, m, &cRandom_kEUpe3Ez_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_9lZV8lIN, 1, m, &cRandom_9lZV8lIN_sendMessage);
       break;
     }
     case 1: {
@@ -614,16 +614,16 @@ void Heavy_prog::cSlice_tiBg7swR_sendMessage(HeavyContextInterface *_c, int letI
   }
 }
 
-void Heavy_prog::cMsg_xyEyMaNk_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_pcYO1Zoj_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(2);
   msg_init(m, 2, msg_getTimestamp(n));
   msg_setElementToFrom(m, 0, n, 0);
   msg_setFloat(m, 1, 1.0f);
-  sVari_onMessage(_c, &Context(_c)->sVari_O1SIByJc, m);
+  sVari_onMessage(_c, &Context(_c)->sVari_DZ63AjSt, m);
 }
 
-void Heavy_prog::cSwitchcase_5tEhAC34_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
+void Heavy_prog::cSwitchcase_1Syeg9xA_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
   int msgIndex = 0;
   switch (msg_getHash(m, msgIndex)) {
     case 0x6D60E6E: { // "symbol"
@@ -633,32 +633,32 @@ void Heavy_prog::cSwitchcase_5tEhAC34_onMessage(HeavyContextInterface *_c, void 
   }
   switch (msg_getHash(m, msgIndex)) {
     case 0x7E64BD01: { // "seed"
-      cSlice_onMessage(_c, &Context(_c)->cSlice_HppREbMU, 0, m, &cSlice_HppREbMU_sendMessage);
+      cSlice_onMessage(_c, &Context(_c)->cSlice_9BeB9bjR, 0, m, &cSlice_9BeB9bjR_sendMessage);
       break;
     }
     default: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_0rW6epQm, 0, m, &cRandom_0rW6epQm_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_Wz5qNoW8, 0, m, &cRandom_Wz5qNoW8_sendMessage);
       break;
     }
   }
 }
 
-void Heavy_prog::cBinop_p81Vs5ZL_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_6vjbkvMc_sendMessage);
+void Heavy_prog::cBinop_cQkUE2hd_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_PTUyVjmu_sendMessage);
 }
 
-void Heavy_prog::cUnop_6vjbkvMc_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cSwitchcase_6aTj8MRG_onMessage(_c, NULL, 0, m, NULL);
+void Heavy_prog::cUnop_PTUyVjmu_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cSwitchcase_VqlizZyx_onMessage(_c, NULL, 0, m, NULL);
 }
 
-void Heavy_prog::cRandom_0rW6epQm_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 12.0f, 0, m, &cBinop_p81Vs5ZL_sendMessage);
+void Heavy_prog::cRandom_Wz5qNoW8_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 12.0f, 0, m, &cBinop_cQkUE2hd_sendMessage);
 }
 
-void Heavy_prog::cSlice_HppREbMU_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cSlice_9BeB9bjR_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
   switch (letIn) {
     case 0: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_0rW6epQm, 1, m, &cRandom_0rW6epQm_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_Wz5qNoW8, 1, m, &cRandom_Wz5qNoW8_sendMessage);
       break;
     }
     case 1: {
@@ -668,7 +668,7 @@ void Heavy_prog::cSlice_HppREbMU_sendMessage(HeavyContextInterface *_c, int letI
   }
 }
 
-void Heavy_prog::cSwitchcase_t2jfKJeH_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
+void Heavy_prog::cSwitchcase_Llp6bDeo_onMessage(HeavyContextInterface *_c, void *o, int letIn, const HvMessage *const m, void *sendMessage) {
   int msgIndex = 0;
   switch (msg_getHash(m, msgIndex)) {
     case 0x6D60E6E: { // "symbol"
@@ -678,32 +678,32 @@ void Heavy_prog::cSwitchcase_t2jfKJeH_onMessage(HeavyContextInterface *_c, void 
   }
   switch (msg_getHash(m, msgIndex)) {
     case 0x7E64BD01: { // "seed"
-      cSlice_onMessage(_c, &Context(_c)->cSlice_FqmV7XIQ, 0, m, &cSlice_FqmV7XIQ_sendMessage);
+      cSlice_onMessage(_c, &Context(_c)->cSlice_amEEHe9H, 0, m, &cSlice_amEEHe9H_sendMessage);
       break;
     }
     default: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_PWdriHN8, 0, m, &cRandom_PWdriHN8_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_0vxC7Z34, 0, m, &cRandom_0vxC7Z34_sendMessage);
       break;
     }
   }
 }
 
-void Heavy_prog::cBinop_zRSLw1sW_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_ZJzEbObe_sendMessage);
+void Heavy_prog::cBinop_vsYlevBD_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cUnop_onMessage(_c, HV_UNOP_FLOOR, m, &cUnop_kTpJxmnl_sendMessage);
 }
 
-void Heavy_prog::cUnop_ZJzEbObe_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cVar_onMessage(_c, &Context(_c)->cVar_WP9CysuC, 0, m, &cVar_WP9CysuC_sendMessage);
+void Heavy_prog::cUnop_kTpJxmnl_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cVar_onMessage(_c, &Context(_c)->cVar_LSJoNrY2, 0, m, &cVar_LSJoNrY2_sendMessage);
 }
 
-void Heavy_prog::cRandom_PWdriHN8_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 100.0f, 0, m, &cBinop_zRSLw1sW_sendMessage);
+void Heavy_prog::cRandom_0vxC7Z34_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_MULTIPLY, 100.0f, 0, m, &cBinop_vsYlevBD_sendMessage);
 }
 
-void Heavy_prog::cSlice_FqmV7XIQ_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+void Heavy_prog::cSlice_amEEHe9H_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
   switch (letIn) {
     case 0: {
-      cRandom_onMessage(_c, &Context(_c)->cRandom_PWdriHN8, 1, m, &cRandom_PWdriHN8_sendMessage);
+      cRandom_onMessage(_c, &Context(_c)->cRandom_0vxC7Z34, 1, m, &cRandom_0vxC7Z34_sendMessage);
       break;
     }
     case 1: {
@@ -713,85 +713,75 @@ void Heavy_prog::cSlice_FqmV7XIQ_sendMessage(HeavyContextInterface *_c, int letI
   }
 }
 
-void Heavy_prog::cBinop_jY4kWi8M_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cVar_onMessage(_c, &Context(_c)->cVar_L4gHzjFo, 0, m, &cVar_L4gHzjFo_sendMessage);
+void Heavy_prog::cBinop_PYRsC6b4_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cVar_onMessage(_c, &Context(_c)->cVar_dcB2rE3s, 0, m, &cVar_dcB2rE3s_sendMessage);
 }
 
-void Heavy_prog::cMsg_qH2scIH0_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_SWGs3knf_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(1);
   msg_init(m, 1, msg_getTimestamp(n));
   msg_setFloat(m, 0, 1.0f);
-  sLine_onMessage(_c, &Context(_c)->sLine_wMLytt6S, 0, m, NULL);
+  sLine_onMessage(_c, &Context(_c)->sLine_GPM84qEL, 0, m, NULL);
 }
 
-void Heavy_prog::cMsg_MKXyn3Lf_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_LyuUczKA_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(2);
   msg_init(m, 2, msg_getTimestamp(n));
   msg_setFloat(m, 0, 0.0f);
   msg_setFloat(m, 1, 20.0f);
-  sLine_onMessage(_c, &Context(_c)->sLine_wMLytt6S, 0, m, NULL);
+  sLine_onMessage(_c, &Context(_c)->sLine_GPM84qEL, 0, m, NULL);
 }
 
-void Heavy_prog::cCast_MIg4GjYP_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_qH2scIH0_sendMessage(_c, 0, m);
+void Heavy_prog::cCast_fLM3Z4kR_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cSwitchcase_1Syeg9xA_onMessage(_c, NULL, 0, m, NULL);
 }
 
-void Heavy_prog::cCast_4VaoAHoj_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cSwitchcase_5tEhAC34_onMessage(_c, NULL, 0, m, NULL);
+void Heavy_prog::cCast_pPtLJXxT_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_SWGs3knf_sendMessage(_c, 0, m);
 }
 
-void Heavy_prog::cMsg_uhBSJ6jO_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
+void Heavy_prog::cMsg_9ComHiEW_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
   HvMessage *m = nullptr;
   m = HV_MESSAGE_ON_STACK(2);
   msg_init(m, 2, msg_getTimestamp(n));
   msg_setFloat(m, 0, 0.0f);
   msg_setFloat(m, 1, 80.0f);
-  sLine_onMessage(_c, &Context(_c)->sLine_wMLytt6S, 0, m, NULL);
+  sLine_onMessage(_c, &Context(_c)->sLine_GPM84qEL, 0, m, NULL);
 }
 
-void Heavy_prog::cBinop_I5qhDPya_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cBinop_k_onMessage(_c, NULL, HV_BINOP_ADD, 110.0f, 0, m, &cBinop_mEvytSox_sendMessage);
-  cMsg_QApHSFQS_sendMessage(_c, 0, m);
+void Heavy_prog::cBinop_gabMzmGo_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cBinop_k_onMessage(_c, NULL, HV_BINOP_ADD, 110.0f, 0, m, &cBinop_YVDBtW4U_sendMessage);
 }
 
-void Heavy_prog::cBinop_mEvytSox_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cVar_onMessage(_c, &Context(_c)->cVar_9WVqBWGL, 0, m, &cVar_9WVqBWGL_sendMessage);
+void Heavy_prog::cBinop_YVDBtW4U_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cVar_onMessage(_c, &Context(_c)->cVar_UVoHqOh4, 0, m, &cVar_UVoHqOh4_sendMessage);
 }
 
-void Heavy_prog::cMsg_QApHSFQS_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *const n) {
-  HvMessage *m = nullptr;
-  m = HV_MESSAGE_ON_STACK(2);
-  msg_init(m, 2, msg_getTimestamp(n));
-  msg_setSymbol(m, 0, "seed");
-  msg_setFloat(m, 1, 123.0f);
-  cMsg_xyEyMaNk_sendMessage(_c, 0, m);
+void Heavy_prog::cBinop_reXt6V8x_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  sVarf_onMessage(_c, &Context(_c)->sVarf_95VmBnGZ, m);
+  sVarf_onMessage(_c, &Context(_c)->sVarf_nhejub5A, m);
 }
 
-void Heavy_prog::cBinop_5vMJSCzr_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  sVarf_onMessage(_c, &Context(_c)->sVarf_yubGt1V0, m);
-  sVarf_onMessage(_c, &Context(_c)->sVarf_c7luVdha, m);
+void Heavy_prog::cBinop_IEdVCssP_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  sVarf_onMessage(_c, &Context(_c)->sVarf_gMMntJe4, m);
 }
 
-void Heavy_prog::cBinop_eTp9IeV0_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  sVarf_onMessage(_c, &Context(_c)->sVarf_x3JNJEoy, m);
+void Heavy_prog::cReceive_1ec7vajz_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cMsg_Fm6xgjAz_sendMessage(_c, 0, m);
+  cVar_onMessage(_c, &Context(_c)->cVar_e7vqtAD6, 0, m, &cVar_e7vqtAD6_sendMessage);
+  cMsg_UxParpD8_sendMessage(_c, 0, m);
+  cVar_onMessage(_c, &Context(_c)->cVar_kvrptBmn, 0, m, &cVar_kvrptBmn_sendMessage);
+  cSwitchcase_N45YWsX1_onMessage(_c, NULL, 0, m, NULL);
 }
 
-void Heavy_prog::cReceive_dY6z9ZgY_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cMsg_oYttykXC_sendMessage(_c, 0, m);
-  cVar_onMessage(_c, &Context(_c)->cVar_OEzkZyz7, 0, m, &cVar_OEzkZyz7_sendMessage);
-  cMsg_SCrIvVnv_sendMessage(_c, 0, m);
-  cVar_onMessage(_c, &Context(_c)->cVar_nVhFXPsO, 0, m, &cVar_nVhFXPsO_sendMessage);
-  cSwitchcase_HbTKcl9j_onMessage(_c, NULL, 0, m, NULL);
-}
-
-void Heavy_prog::cReceive_ZOfw8fDb_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
-  cSwitchcase_08JU16lW_onMessage(_c, NULL, 0, m, NULL);
-  cSwitchcase_FH1SIaHg_onMessage(_c, NULL, 0, m, NULL);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_MIg4GjYP_sendMessage);
-  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_4VaoAHoj_sendMessage);
-  cSwitchcase_t2jfKJeH_onMessage(_c, NULL, 0, m, NULL);
+void Heavy_prog::cReceive_kJ2Ejwe6_sendMessage(HeavyContextInterface *_c, int letIn, const HvMessage *m) {
+  cSwitchcase_padfYcwh_onMessage(_c, NULL, 0, m, NULL);
+  cSwitchcase_IIxr5hW1_onMessage(_c, NULL, 0, m, NULL);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_pPtLJXxT_sendMessage);
+  cCast_onMessage(_c, HV_CAST_BANG, 0, m, &cCast_fLM3Z4kR_sendMessage);
+  cSwitchcase_Llp6bDeo_onMessage(_c, NULL, 0, m, NULL);
 }
 
 
@@ -841,34 +831,34 @@ int Heavy_prog::process(float **inputBuffers, float **outputBuffers, int n) {
     __hv_zero_f(VOf(O1));
 
     // process all signal functions
-    __hv_varread_i(&sVari_O1SIByJc, VOi(Bi0));
+    __hv_varread_i(&sVari_DZ63AjSt, VOi(Bi0));
     __hv_var_k_i(VOi(Bi1), 16807, 16807, 16807, 16807, 16807, 16807, 16807, 16807);
     __hv_mul_i(VIi(Bi0), VIi(Bi1), VOi(Bi1));
     __hv_cast_if(VIi(Bi1), VOf(Bf0));
     __hv_var_k_f(VOf(Bf1), 4.65661e-10f, 4.65661e-10f, 4.65661e-10f, 4.65661e-10f, 4.65661e-10f, 4.65661e-10f, 4.65661e-10f, 4.65661e-10f);
     __hv_mul_f(VIf(Bf0), VIf(Bf1), VOf(Bf1));
-    __hv_varwrite_i(&sVari_O1SIByJc, VIi(Bi1));
-    __hv_varread_f(&sVarf_LfbkmlPF, VOf(Bf0));
-    __hv_rpole_f(&sRPole_fVALYJ5g, VIf(Bf1), VIf(Bf0), VOf(Bf0));
+    __hv_varwrite_i(&sVari_DZ63AjSt, VIi(Bi1));
+    __hv_varread_f(&sVarf_v5Vyztih, VOf(Bf0));
+    __hv_rpole_f(&sRPole_CMFkc4Vk, VIf(Bf1), VIf(Bf0), VOf(Bf0));
     __hv_var_k_f(VOf(Bf2), 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-    __hv_del1_f(&sDel1_MDBTTKDU, VIf(Bf0), VOf(Bf3));
+    __hv_del1_f(&sDel1_0da2dfdo, VIf(Bf0), VOf(Bf3));
     __hv_mul_f(VIf(Bf3), VIf(Bf2), VOf(Bf2));
     __hv_sub_f(VIf(Bf0), VIf(Bf2), VOf(Bf2));
-    __hv_varread_f(&sVarf_zWT1IZPq, VOf(Bf0));
+    __hv_varread_f(&sVarf_ezmUOCtN, VOf(Bf0));
     __hv_mul_f(VIf(Bf2), VIf(Bf0), VOf(Bf0));
-    __hv_line_f(&sLine_wMLytt6S, VOf(Bf2));
+    __hv_line_f(&sLine_GPM84qEL, VOf(Bf2));
     __hv_mul_f(VIf(Bf0), VIf(Bf2), VOf(Bf2));
     __hv_var_k_f(VOf(Bf0), 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f);
-    __hv_phasor_k_f(&sPhasor_ndfG8Sy2, VOf(Bf3));
-    __hv_del1_f(&sDel1_5RE5oKdi, VIf(Bf3), VOf(Bf4));
+    __hv_phasor_k_f(&sPhasor_sTQ2VfGS, VOf(Bf3));
+    __hv_del1_f(&sDel1_QkoARA9l, VIf(Bf3), VOf(Bf4));
     __hv_lt_f(VIf(Bf3), VIf(Bf4), VOf(Bf4));
-    __hv_samphold_f(&sSamphold_v7TLWLo9, VIf(Bf1), VIf(Bf4), VOf(Bf4));
-    __hv_varread_f(&sVarf_yubGt1V0, VOf(Bf5));
+    __hv_samphold_f(&sSamphold_Ury8CONE, VIf(Bf1), VIf(Bf4), VOf(Bf4));
+    __hv_varread_f(&sVarf_95VmBnGZ, VOf(Bf5));
     __hv_mul_f(VIf(Bf4), VIf(Bf5), VOf(Bf5));
     __hv_var_k_f(VOf(Bf6), 256.0f, 256.0f, 256.0f, 256.0f, 256.0f, 256.0f, 256.0f, 256.0f);
     __hv_mul_f(VIf(Bf3), VIf(Bf6), VOf(Bf6));
     __hv_mul_f(VIf(Bf5), VIf(Bf6), VOf(Bf6));
-    __hv_phasor_f(&sPhasor_MVSIYAQ2, VIf(Bf6), VOf(Bf6));
+    __hv_phasor_f(&sPhasor_DdNASZ6T, VIf(Bf6), VOf(Bf6));
     __hv_var_k_f(VOf(Bf5), 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
     __hv_sub_f(VIf(Bf6), VIf(Bf5), VOf(Bf5));
     __hv_abs_f(VIf(Bf5), VOf(Bf5));
@@ -883,9 +873,9 @@ int Heavy_prog::process(float **inputBuffers, float **outputBuffers, int n) {
     __hv_var_k_f(VOf(Bf8), -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f);
     __hv_fma_f(VIf(Bf3), VIf(Bf8), VIf(Bf5), VOf(Bf5));
     __hv_fma_f(VIf(Bf6), VIf(Bf7), VIf(Bf5), VOf(Bf5));
-    __hv_varread_f(&sVarf_c7luVdha, VOf(Bf7));
+    __hv_varread_f(&sVarf_nhejub5A, VOf(Bf7));
     __hv_fma_f(VIf(Bf5), VIf(Bf7), VIf(Bf4), VOf(Bf4));
-    __hv_phasor_f(&sPhasor_ILH3Kzax, VIf(Bf4), VOf(Bf4));
+    __hv_phasor_f(&sPhasor_cEi439Ko, VIf(Bf4), VOf(Bf4));
     __hv_var_k_f(VOf(Bf7), 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
     __hv_sub_f(VIf(Bf4), VIf(Bf7), VOf(Bf7));
     __hv_abs_f(VIf(Bf7), VOf(Bf7));
@@ -900,8 +890,8 @@ int Heavy_prog::process(float **inputBuffers, float **outputBuffers, int n) {
     __hv_var_k_f(VOf(Bf3), -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f, -0.166666666666667f);
     __hv_fma_f(VIf(Bf6), VIf(Bf3), VIf(Bf7), VOf(Bf7));
     __hv_fma_f(VIf(Bf4), VIf(Bf8), VIf(Bf7), VOf(Bf7));
-    __hv_line_f(&sLine_NJ9KOKSm, VOf(Bf8));
-    __hv_varread_f(&sVarf_HRuactSx, VOf(Bf4));
+    __hv_line_f(&sLine_5h0nUEpP, VOf(Bf8));
+    __hv_varread_f(&sVarf_dSFA78l2, VOf(Bf4));
     __hv_mul_f(VIf(Bf8), VIf(Bf4), VOf(Bf4));
     __hv_mul_f(VIf(Bf4), VIf(Bf4), VOf(Bf4));
     __hv_mul_f(VIf(Bf4), VIf(Bf8), VOf(Bf4));
@@ -932,24 +922,24 @@ int Heavy_prog::process(float **inputBuffers, float **outputBuffers, int n) {
     __hv_mul_f(VIf(Bf12), VIf(Bf8), VOf(Bf8));
     __hv_var_k_f(VOf(Bf12), 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f);
     __hv_mul_f(VIf(Bf8), VIf(Bf12), VOf(Bf12));
-    __hv_varread_f(&sVarf_x3JNJEoy, VOf(Bf8));
+    __hv_varread_f(&sVarf_gMMntJe4, VOf(Bf8));
     __hv_mul_f(VIf(Bf1), VIf(Bf8), VOf(Bf8));
-    __hv_varread_f(&sVarf_vZ3freh8, VOf(Bf1));
+    __hv_varread_f(&sVarf_nK4OwyfG, VOf(Bf1));
     __hv_mul_f(VIf(Bf8), VIf(Bf1), VOf(Bf1));
-    __hv_varread_f(&sVarf_kxIdumy8, VOf(Bf8));
-    __hv_rpole_f(&sRPole_V92cpwNw, VIf(Bf1), VIf(Bf8), VOf(Bf8));
+    __hv_varread_f(&sVarf_b94bFdan, VOf(Bf8));
+    __hv_rpole_f(&sRPole_2Q5c8Ysv, VIf(Bf1), VIf(Bf8), VOf(Bf8));
     __hv_add_f(VIf(Bf12), VIf(Bf8), VOf(Bf8));
     __hv_var_k_f(VOf(Bf12), 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f);
     __hv_mul_f(VIf(Bf8), VIf(Bf12), VOf(Bf12));
     __hv_add_f(VIf(Bf7), VIf(Bf12), VOf(Bf7));
     __hv_fma_f(VIf(Bf2), VIf(Bf0), VIf(Bf7), VOf(Bf7));
-    __hv_var_k_f(VOf(Bf0), 0.15f, 0.15f, 0.15f, 0.15f, 0.15f, 0.15f, 0.15f, 0.15f);
+    __hv_var_k_f(VOf(Bf0), 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f);
     __hv_mul_f(VIf(Bf7), VIf(Bf0), VOf(Bf0));
     __hv_add_f(VIf(Bf0), VIf(O1), VOf(O1));
     __hv_var_k_f(VOf(Bf0), 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f, 4.0f);
     __hv_add_f(VIf(Bf5), VIf(Bf12), VOf(Bf12));
     __hv_fma_f(VIf(Bf2), VIf(Bf0), VIf(Bf12), VOf(Bf12));
-    __hv_var_k_f(VOf(Bf0), 0.15f, 0.15f, 0.15f, 0.15f, 0.15f, 0.15f, 0.15f, 0.15f);
+    __hv_var_k_f(VOf(Bf0), 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f);
     __hv_mul_f(VIf(Bf12), VIf(Bf0), VOf(Bf0));
     __hv_add_f(VIf(Bf0), VIf(O0), VOf(O0));
 
