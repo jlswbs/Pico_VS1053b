@@ -6,7 +6,7 @@
   Pot2 = samplerate
   Pot3 = sample grains
  
-  Created by JLS 2024
+  Created by JLS 2026
 
 */
 
@@ -20184,6 +20184,17 @@ const uint8_t samples[] = {
 0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,
 };
 
+int findFirstSync() {
+
+  for (int i = 0; i < sizeof(samples) - 2; i++) {
+    if (samples[i] == 0xFF && (samples[i+1] & 0xE0) == 0xE0) {
+      return i;
+    }
+  }
+  return 0;
+
+}
+
 void setup(){
   
   analogReadResolution(12);
@@ -20204,26 +20215,61 @@ void setup(){
   WriteReg16(SCI_CLOCKF, 0x6000);   // set multiplier to 3.0x
   WriteReg16(SCI_VOL, 0x3F3F);      // set volume
 
+  digitalWrite(MP3_XDCS, LOW);
+
+  int firstSyncPos = findFirstSync();
+  int headerSize = firstSyncPos;
+  
+  digitalWrite(MP3_XDCS, LOW);
+  
+  for (int i = 0; i < 417; i++) {
+
+    uint8_t data = samples[firstSyncPos + i];
+    while(!digitalRead(MP3_DREQ));
+    PicoSPI0.transfer(data);
+
+  }
+  
+  digitalWrite(MP3_XDCS, HIGH);
+
 }
 
 void loop(){
 
   uint16_t srate = map(analogRead(A2), MINADC, MAXADC, 44100, 4410);
-  WriteReg16(SCI_AUDATA, srate);  // set samplerate   
+  WriteReg16(SCI_AUDATA, srate);
 
-  int grains = 256 * map(analogRead(A3), MINADC, MAXADC, 1, sizeof(samples) / 1024);
-  int positions = map(analogRead(A1), MINADC, MAXADC, 0, sizeof(samples) - grains);
+  int firstSyncPos = findFirstSync();
 
-  const uint8_t *p;
-  p = &samples[positions];
-  
-  for (int i = 0; i < grains; i++){
+  int numFrames = map(analogRead(A3), MINADC, MAXADC, 2, (sizeof(samples) / 417 / 4) - 1);
+  int grains = numFrames * 417;
 
-    while(!digitalRead(MP3_DREQ)){}
-    digitalWrite(MP3_XDCS, LOW);
-    PicoSPI0.transfer(*p++);
-    digitalWrite(MP3_XDCS, HIGH);
+  int maxTargetPos = sizeof(samples) - grains - 417;
+  int targetPos = map(analogRead(A1), MINADC, MAXADC, firstSyncPos, maxTargetPos);
+
+  while (targetPos < sizeof(samples) - 2) {
+
+    if (samples[targetPos] == 0xFF && (samples[targetPos+1] & 0xE0) == 0xE0) {
+      break; 
+    }
+    targetPos++;
 
   }
+
+  digitalWrite(MP3_XDCS, LOW);
   
+  for (int i = 0; i < grains; i++) {
+
+    int index = targetPos + i;
+    
+    if (index >= sizeof(samples)) index = firstSyncPos;    
+
+    uint8_t data = samples[index];   
+    while(!digitalRead(MP3_DREQ));
+    PicoSPI0.transfer(data);
+
+  }
+
+  digitalWrite(MP3_XDCS, HIGH);
+
 }
