@@ -1,12 +1,12 @@
-// VS1053 DSP mp3 stream hack - Euclidean sequencers mangling with grains //
+// VS1053 DSP mp3 stream hack - Euclidean sequencer grain mangler //
 
 /*
 
   Pot1 = euclid steps
   Pot2 = euclid hits
-  Pot3 = grain lenght
+  Pot3 = samplerate
  
-  Created by JLS 2024
+  Created by JLS 2026
 
 */
 
@@ -57,6 +57,8 @@
 
 #define MAXADC    4095  // max ADC value
 #define MINADC    0     // min ADC value
+#define MAXSTEPS  128
+#define MAXHITS   64
 
   int nx, tx;
   int ny, ty;
@@ -16271,6 +16273,17 @@ const uint8_t samples[] = {
 
 };
 
+int findFirstSync() {
+
+  for (int i = 0; i < sizeof(samples) - 2; i++) {
+    if (samples[i] == 0xFF && (samples[i+1] & 0xE0) == 0xE0) {
+      return i;
+    }
+  }
+  return 0;
+
+}
+
 void setup(){
   
   analogReadResolution(12);
@@ -16291,25 +16304,39 @@ void setup(){
   WriteReg16(SCI_CLOCKF, 0x6000);   // set multiplier to 3.0x
   WriteReg16(SCI_VOL, 0x3F3F);      // set volume
 
+  int firstSyncPos = findFirstSync();
+  int headerSize = firstSyncPos;
+
+  digitalWrite(MP3_XDCS, LOW);
+  
+  for (int i = 0; i < 417; i++) {
+
+    uint8_t data = samples[firstSyncPos + i];
+    while(!digitalRead(MP3_DREQ));
+    PicoSPI0.transfer(data);
+  
+  }
+  
+  digitalWrite(MP3_XDCS, HIGH);
+
 }
 
 void loop(){
 
-  int steps = map(analogRead(A1), MINADC, MAXADC, 2, 48);
-  int hits = map(analogRead(A2), MINADC, MAXADC, 2, 48);
-  int grain = map(analogRead(A3), MINADC, MAXADC, 512, 8192);
+  int steps = map(analogRead(A1), MINADC, MAXADC, 2, MAXSTEPS);
+  int hits = map(analogRead(A2), MINADC, MAXADC, 2, MAXHITS);
+  uint16_t srate = map(analogRead(A3), MINADC, MAXADC, 44100, 4410);
 
-  uint16_t srate = map(nx*ny, 0, hits*steps, 44100, 4410);
-  WriteReg16(SCI_AUDATA, srate);  // set samplerate   
+  WriteReg16(SCI_AUDATA, srate);
 
   nx = tx;
   ny = ty;
-       
+
   if (ny == 0) {
-          
+
     tx = rand()%steps;
-    ty = hits; 
-          
+    ty = hits;
+    
   } else { 
           
     tx = ny;
@@ -16317,20 +16344,38 @@ void loop(){
           
   }
 
-  int grains = grain * map(ny, 0, hits, 1, 8);
-  int positions = map(nx, 0, steps, 0, sizeof(samples) - grains);
+  int firstSyncPos = findFirstSync();
 
-  const uint8_t *p;
-  p = &samples[positions];
+  int totalBlocks = (sizeof(samples) - firstSyncPos) / 417;
+  int blocksInGrain = map(ny, 0, hits, 2, MAXHITS); 
+  int grains = blocksInGrain * 417;
+  int maxBlockIndex = totalBlocks - blocksInGrain;
+  int startBlock = map(nx, 0, steps, 0, maxBlockIndex);
+  int targetPos = firstSyncPos + (startBlock * 417);
 
-  for (int i = 0; i < grains; i++){
+  while (targetPos < sizeof(samples) - 2) {
 
-    while(!digitalRead(MP3_DREQ)){}
-
-    digitalWrite(MP3_XDCS, LOW);
-    PicoSPI0.transfer(*p++);
-    digitalWrite(MP3_XDCS, HIGH);
+    if (samples[targetPos] == 0xFF && (samples[targetPos+1] & 0xE0) == 0xE0) {
+      break; 
+    }
+    targetPos++;
 
   }
+
+  digitalWrite(MP3_XDCS, LOW);
+  
+  for (int i = 0; i < grains; i++) {
+
+    int index = targetPos + i;
+    
+    if (index >= sizeof(samples)) index = firstSyncPos;    
+
+    uint8_t data = samples[index];
+    while(!digitalRead(MP3_DREQ));
+    PicoSPI0.transfer(data);
+
+  }
+
+  digitalWrite(MP3_XDCS, HIGH);
  
 }
